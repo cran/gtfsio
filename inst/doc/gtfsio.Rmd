@@ -1,0 +1,201 @@
+---
+title: "Introduction to gtfsio"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to gtfsio}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The General Transit Feed Specification (GTFS) data format defines a common scheme for describing transit systems, and is widely used by transit agencies around the world and consumed by many software applications. Thus, many **R** packages have been developed to read, write, manipulate and analyse such feeds, such as `{gtfs2gps}`, `{gtfsrouter}`, `{gtfstools}` and `{tidytransit}`.
+
+Each one of these, however, represent GTFS feeds in a slightly different way, making the interoperability between packages harder to accomplish. At the end of the day, this lack of integration results in a more painful experience to the final user who may want to enjoy functions from different packages.
+
+**gtfsio** offers tools for the development of GTFS-related packages that aim to increase such interoperability. It establishes a standard for representing GTFS feeds using R data types based on [Google's Static GTFS Reference](https://developers.google.com/transit/gtfs/reference). It provides fast and flexible functions to read and write GTFS feeds while sticking to this standard. It defines a basic `gtfs` class which is meant to be extended by packages that depend on it. And it also offers utility functions that support checking the structure of GTFS objects.
+
+This vignette describes the basic usage of **gtfsio**. Please read `get_gtfs_standards()` documentation for more detail on the standards for reading and writing GTFS feeds using R data types.
+
+# Installation 
+
+Before using **gtfsio** please make sure that you have it installed in your computer. You can download either the most stable version from CRAN or the development version from GitHub:
+
+```{r, eval = FALSE}
+# stable version
+install.packages("gtfsio")
+
+# development version
+remotes::install_github("r-transit/gtfsio")
+```
+
+Then attach it to the current R session:
+
+```{r, message = FALSE}
+library(gtfsio)
+```
+
+Throughout this demonstration we will be using a few sample files included in the package:
+
+```{r}
+data_dir <- system.file("extdata", package = "gtfsio")
+list.files(data_dir)
+```
+
+- `ggl_gtfs.zip` has been manually built from the [example GTFS feed](https://developers.google.com/transit/gtfs/examples/gtfs-feed) provided by Google. The files samples are licensed under [Creative Commons Attribution 4.0 License](https://creativecommons.org/licenses/by/4.0/).
+- `bad_gtfs.zip` is a modified version of `ggl_gtfs.zip` that includes some issues frequently found in GTFS data.
+
+# Basic usage
+
+## Reading feeds
+
+To read a feed use the `import_gtfs()` function. It takes either a local path or an URL to a GTFS `.zip` file and returns a GTFS object (which is, basically, a `list` of data frames):
+
+```{r}
+gtfs_path <- file.path(data_dir, "ggl_gtfs.zip")
+gtfs_url  <- "https://github.com/r-transit/gtfsio/raw/master/inst/extdata/ggl_gtfs.zip"
+
+gtfs_from_path <- import_gtfs(gtfs_path)
+names(gtfs_from_path)
+
+gtfs_from_url <- import_gtfs(gtfs_url)
+names(gtfs_from_url)
+```
+
+The function reads, by default, all `.txt` files contained in the `.zip` file. Alternatively, you can specify which files should be read with the `files` argument (note: without the `.txt` extension): 
+
+```{r}
+gtfs <- import_gtfs(gtfs_path, files = c("shapes", "trips"))
+
+gtfs
+```
+
+Similarly, you can use the `fields` argument to read only a few selective fields of a file. These arguments can be combined, offering a great deal of flexibility that can translate into very fast reading times.
+
+```{r}
+gtfs <- import_gtfs(
+  gtfs_path,
+  files = c("shapes", "trips"),
+  fields = list(trips = c("trip_id", "route_id"))
+)
+
+gtfs
+```
+
+These fields are parsed according to the standards for reading and writing GTFS feeds in R. Undocumented files and fields (i.e. not specified in the [GTFS reference](https://developers.google.com/transit/gtfs/reference)) are read as `character`, by default. You can overrule this default with `extra_spec` (note that only undocumented fields should be specified in this argument). `ggl_gtfs.zip` contains an undocumented field in the `levels.txt` file, named `elevation`. Let's check the effect of `extra_spec`:
+
+```{r}
+gtfs <- import_gtfs(gtfs_path, files = "levels")
+
+gtfs$levels
+
+class(gtfs$levels$elevation)
+
+gtfs <- import_gtfs(
+  gtfs_path, 
+  files = "levels", 
+  extra_spec = list(levels = c(elevation = "integer"))
+)
+
+gtfs$levels
+
+class(gtfs$levels$elevation)
+```
+
+## Writing feeds
+
+Use `export_gtfs()` to write a GTFS object to disk. Please note that the function assumes that the object is formatted according to the standards for reading and writing GTFS feeds in **R** - i.e. if it's not, any conversions should be done before using `export_gtfs()`.
+
+Objects are written as `.zip` feeds by default, but you can also write them as directories using the `as_dir` argument:
+
+```{r}
+gtfs <- import_gtfs(gtfs_path)
+tmpf <- tempfile(fileext = ".zip")
+tmpd <- tempfile()
+
+export_gtfs(gtfs, tmpf)
+zip::zip_list(tmpf)$filename
+
+export_gtfs(gtfs, tmpd, as_dir = TRUE)
+list.files(tmpd)
+```
+
+The function defaults to writing every element inside a GTFS object as a `.txt` file. As with `import_gtfs()`, use the `files` argument to overrule this behaviour:
+
+```{r}
+export_gtfs(gtfs, tmpf, files = c("shapes", "trips"))
+zip::zip_list(tmpf)$filename
+```
+
+You can also use the `standard_only` argument to export only files and fields specified in the [GTFS reference](https://developers.google.com/transit/gtfs/reference) (i.e. to leave out undocumented files/fields). In the example below, `extra_gtfs` contains both an undocumented file (`extra_file`) and an undocumented field in a regular file (`levels$elevation`) that are not written to disk when using `export_gtfs()`:
+
+```{r}
+extra_gtfs <- gtfs
+extra_gtfs$extra_file <- data.frame(column = "value")
+
+export_gtfs(extra_gtfs, tmpd, as_dir = TRUE, standard_only = TRUE)
+
+"extra_file" %in% sub(".txt", "", list.files(tmpd))
+
+levels_fields <- readLines(file.path(tmpd, "levels.txt"), n = 1L)
+grepl("elevation", levels_fields)
+```
+
+## Checking GTFS objects
+
+**gtfsio** also includes functions to check the structure of GTFS objects. `check_files_exist()` checks the existence of elements representing specific text files inside an object. It returns `TRUE` if the check is successful, and `FALSE` otherwise. `assert_files_exist()` invisibly returns the object if successful, and throws an error otherwise:
+
+```{r, error = TRUE}
+gtfs <- import_gtfs(gtfs_path, files = c("shapes", "trips"))
+
+check_files_exist(gtfs, "shapes")
+check_files_exist(gtfs, "stop_times")
+
+assert_files_exist(gtfs, "shapes")
+assert_files_exist(gtfs, "stop_times")
+```
+
+`check_fields_exist()` checks the existence of fields, represented by columns, inside GTFS objects. It returns `TRUE` if the check is successful, and `FALSE` otherwise. `assert_fields_exist()` invisibly returns the object if successful, and throws an error otherwise:
+
+```{r, error = TRUE}
+gtfs <- import_gtfs(
+  gtfs_path, 
+  files = "trips", 
+  fields = list(trips = "trip_id")
+)
+
+check_fields_exist(gtfs, "trips", fields = "trip_id")
+check_fields_exist(gtfs, "trips", fields = "shape_id")
+
+assert_fields_exist(gtfs, "trips", fields = "trip_id")
+assert_fields_exist(gtfs, "trips", fields = "shape_id")
+```
+
+`check_fields_types()` checks the types of fields inside GTFS objects. It returns `TRUE` if the check is successful, and `FALSE` otherwise. `assert_fields_types()` invisibly returns the object if successful, and throws an error otherwise:
+
+```{r, error = TRUE}
+gtfs <- import_gtfs(gtfs_path, files = "levels")
+
+check_fields_types(gtfs, "levels", fields = "elevation", types = "character")
+check_fields_types(gtfs, "levels", fields = "elevation", types = "integer")
+
+assert_fields_types(gtfs, "levels", fields = "elevation", types = "character")
+assert_fields_types(gtfs, "levels", fields = "elevation", types = "integer")
+```
+
+Please notes that "lower-level" checks are conducted inside each function - e.g. before checking the type of a field, first the existence of such field is checked:
+
+```{r, error = TRUE}
+gtfs <- import_gtfs(gtfs_path, files = "shapes")
+
+check_fields_types(gtfs, "stop_times", fields = "stop_id", types = "character")
+```
+
+These functions are great for package interoperability. If two distinct packages represent GTFS text files using the same data structure (both `{gtfstools}` and `{gtfsrouter}` use `data.table`s, for example), they just need to add some basic checks before proceeding with operations on objects created by the other package.
+
+So, if `{gtfsrouter}` requires the `transfers` element to perform some operations, it might as well perform them on an object created by `{gtfstools}`, as long as it contains a `transfers` element. Thus, it could greatly benefit of some `assert_*`/`check_*` calls before proceeding with such operations.
