@@ -23,6 +23,9 @@
 #'   that you want to read as a different type). Only supports the
 #'   \code{character}, \code{integer} and \code{numeric} types, also used in
 #'   \code{\link{get_gtfs_standards}}.
+#' @param skip A character vector. Text files that should not be read from the
+#'   GTFS, without the \code{.txt} extension. If \code{NULL} (the default), no
+#'   files are skipped. Cannot be used if \code{files} is set.
 #' @param quiet A logical. Whether to hide log messages and progress bars
 #'   (defaults to \code{TRUE}).
 #'
@@ -61,6 +64,7 @@ import_gtfs <- function(path,
                         files = NULL,
                         fields = NULL,
                         extra_spec = NULL,
+                        skip = NULL,
                         quiet = TRUE) {
 
   # input checking ('files', 'fields' and 'extra_spec' are more thoroughly
@@ -92,6 +96,12 @@ import_gtfs <- function(path,
   if (!is.null(fields) & !is.list(fields))
     stop("'fields' must be either a list or NULL.")
 
+  if (!is.null(files) & !is.null(skip))
+    stop(
+      "Both 'files' and 'skip' were provided. ",
+      "Please use only one of these parameters at a time."
+    )
+
   # if 'path' is an URL, download it and save path to downloaded file to 'path'
 
   if (path_is_url) {
@@ -110,12 +120,15 @@ import_gtfs <- function(path,
   files_in_gtfs <- zip::zip_list(path)$filename
   files_in_gtfs <- gsub(".txt", "", files_in_gtfs)
 
-  # read all text files if 'files' is NULL. else, only the ones specified
+  # read only the text files specified either in 'files' or in 'skip'.
+  # if both are NULL, read all text files
 
-  if (is.null(files))
-    files_to_read <- files_in_gtfs
-  else
+  if (!is.null(files))
     files_to_read <- files
+  else if (!is.null(skip))
+    files_to_read <- setdiff(files_in_gtfs, skip)
+  else
+    files_to_read <- files_in_gtfs
 
   # check if all specified files exist and raise an error if any does not
 

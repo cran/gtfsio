@@ -62,6 +62,14 @@ export_gtfs <- function(gtfs,
   if (!is.character(path) | length(path) != 1)
     stop("'path' must be a string (a character vector of length 1).")
 
+  if (path == tempdir())
+    stop(
+      paste0(
+        "Please use 'tempfile()' instead of 'tempdir()' to designate ",
+        "temporary directories."
+      )
+    )
+
   if (!is.null(files) & !is.character(files))
     stop("'files' must either be a character vector or NULL.")
 
@@ -93,6 +101,10 @@ export_gtfs <- function(gtfs,
       "'path' must have '.zip' extension. ",
       "If you meant to create a directory please set 'as_dir' to TRUE."
     )
+
+  if (as_dir & grepl("\\.zip$", path)) {
+    stop("'path' cannot have '.zip' extension when 'as_dir' is TRUE.")
+  }
 
   extra_files <- setdiff(files, names(gtfs_standards))
   if (standard_only & !is.null(files) & !identical(extra_files, character(0)))
@@ -130,9 +142,14 @@ export_gtfs <- function(gtfs,
       paste0("'", missing_files, "'", collapse = ", ")
     )
 
-  # create temp directory where files should be written to
+  # write files either to a temporary directory (if as_dir = FALSE), or to path
+  # (if as_dir = TRUE)
 
-  tmpd <- tempfile(pattern = "gtfsio")
+  if (as_dir)
+    tmpd <- path
+  else
+    tmpd <- tempfile(pattern = "gtfsio")
+
   unlink(tmpd, recursive = TRUE)
   dir.create(tmpd)
 
@@ -165,26 +182,16 @@ export_gtfs <- function(gtfs,
 
   }
 
-  # write result to 'path'
+  # zip the contents of 'tmpd' to 'path', if as_dir = FALSE
   # remove the file/directory in 'path' (an error would already have been thrown
   # if 'path' pointed to an existing file that should not be overwritten).
   # this action prevents zip::zip() from crashing R when 'path' exists, but is a
   # directory, not a file
   # related issue: https://github.com/r-lib/zip/issues/76
 
-  unlink(path, recursive = TRUE)
-
-  # if 'as_dir' is TRUE, move 'tmpd' to 'path'. else, zip its content to 'path'
-
-  if (as_dir) {
+  if (!as_dir) {
 
     unlink(path, recursive = TRUE)
-    file.rename(tmpd, path)
-
-    if (!quiet)
-      message("GTFS directory successfully moved from ", tmpd, " to ", path)
-
-  } else {
 
     filepaths <- file.path(tmpd, paste0(files, ".txt"))
 

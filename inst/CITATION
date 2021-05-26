@@ -1,0 +1,12 @@
+citHeader("To cite gtfsio in publications use:")
+
+citEntry(
+  entry       = "Manual",
+  title       = "gtfsio: Read and Write General Transit Feed Specification (GTFS) Files",
+  author      = personList(as.person("Daniel Herszenhut"), as.person("Flavio Poletti")),
+  year        = 2021,
+  publisher   = "Zenodo",
+  doi         = "10.5281/zenodo.4665903",
+  url         = "https://doi.org/10.5281/zenodo.4665903",
+  textVersion = "Daniel Herszenhut & Flavio Poletti. (2021). gtfsio: Read and Write General Transit Feed Specification (GTFS) Files. Zenodo. http://doi.org/10.5281/zenodo.4665903"
+)

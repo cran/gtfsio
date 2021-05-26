@@ -101,9 +101,25 @@ expect_error(
   )
 )
 
+# raise an error if path has a '.zip' extension but 'as_dir' is TRUE
+
+expect_error(
+  export_gtfs(gtfs, tmpf, as_dir = TRUE),
+  pattern = "'path' cannot have '\\.zip' extension\\ when 'as_dir' is TRUE\\."
+)
+
+# raise an error if 'as_dir' is TRUE and 'path' is tempdir()
+
+expect_error(
+  export_gtfs(gtfs, tempdir(), as_dir = TRUE),
+  pattern = paste0(
+    "Please use 'tempfile\\(\\)' instead of 'tempdir\\(\\)' to designate ",
+    "temporary directories."
+  )
+)
+
 # object should be exported as a zip file by default
 
-file.remove(tmpf)
 export_gtfs(gtfs, tmpf)
 expect_true(file.exists(tmpf))
 expect_false(dir.exists(tmpf))
@@ -222,13 +238,10 @@ exist_pat <- paste0(
   "but 'overwrite' is set to FALSE\\."
 )
 
-invisible(file.create(tmpf))
+expect_true(file.exists(tmpf))
+expect_true(dir.exists(tmpd))
 expect_error(export_gtfs(gtfs, tmpf, overwrite = FALSE), pattern = exist_pat)
-invisible(file.remove(tmpf))
-dir.create(tmpd, showWarnings = FALSE)
 expect_error(export_gtfs(gtfs, tmpd, overwrite = FALSE), pattern = exist_pat)
-unlink(tmpd, recursive = TRUE)
-
 
 # 'quiet' behaviour -------------------------------------------------------
 
@@ -245,11 +258,10 @@ expect_true(any(grepl("^GTFS object successfully zipped to ", out)))
 
 # as_dir = TRUE
 
-expect_message(export_gtfs(gtfs, tmpf, as_dir = TRUE, quiet = FALSE))
+expect_message(export_gtfs(gtfs, tmpd, as_dir = TRUE, quiet = FALSE))
 out <- capture.output(
-  export_gtfs(gtfs, tmpf, as_dir = TRUE, quiet = FALSE),
+  export_gtfs(gtfs, tmpd, as_dir = TRUE, quiet = FALSE),
   type = "message"
 )
 expect_true(any(grepl("^Writing text files to ", out)))
 expect_true(any(grepl("^  - Writing ", out)))
-expect_true(any(grepl("^GTFS directory successfully moved from ", out)))
