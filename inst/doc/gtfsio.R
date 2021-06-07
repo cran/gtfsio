@@ -121,3 +121,5 @@ gtfs <- import_gtfs(gtfs_path, files = "shapes")
 
 check_fields_types(gtfs, "stop_times", fields = "stop_id", types = "character")
 
+assert_fields_types(gtfs, "stop_times", fileds = "stop_id", types = "character")
+

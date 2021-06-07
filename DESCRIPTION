@@ -1,7 +1,7 @@
 Type: Package
 Package: gtfsio
 Title: Read and Write General Transit Feed Specification (GTFS) Files
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: 
     c(person(given = "Daniel",
              family = "Herszenhut",
@@ -44,7 +44,7 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2021-05-26 18:06:23 UTC; dhersz
+Packaged: 2021-06-06 17:48:20 UTC; dhersz
 Author: Daniel Herszenhut [aut, cre] (<https://orcid.org/0000-0001-8066-1105>),
   Flavio Poletti [aut],
   Mark Padgham [rev],
@@ -53,4 +53,4 @@ Author: Daniel Herszenhut [aut, cre] (<https://orcid.org/0000-0001-8066-1105>),
   Ipea - Institute for Applied Economic Research [cph, fnd]
 Maintainer: Daniel Herszenhut <dhersz@gmail.com>
 Repository: CRAN
-Date/Publication: 2021-05-26 18:30:02 UTC
+Date/Publication: 2021-06-07 06:50:07 UTC
