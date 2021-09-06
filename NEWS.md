@@ -1,3 +1,14 @@
+# gtfsio 0.2.0
+
+## Bug fixes
+
+- `import_gtfs()` would ocasionally include the full path to a table to their name in a GTFS object (#17). Fixed by Mark Padgham (@mapdge) in #18.
+
+## New features
+
+- Added new `summary.gtfs` method. Thanks Mark Padgham (@mapdge).
+- `import_gtfs()` has a new `encoding` parameter, used to handle encoded strings in their native encoding.
+
 # gtfsio 0.1.2
 
 ## Bug fixes

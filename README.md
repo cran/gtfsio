@@ -8,8 +8,10 @@ status](https://github.com/r-transit/gtfsio/workflows/R-CMD-check/badge.svg)](ht
 [![Codecov test
 coverage](https://codecov.io/gh/r-transit/gtfsio/branch/master/graph/badge.svg)](https://codecov.io/gh/r-transit/gtfsio?branch=master)
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4665903.svg)](https://zenodo.org/record/4665903)
+maturing](https://lifecycle.r-lib.org/articles/figures/lifecycle-maturing.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![CRAN/METACRAN Total
+downloads](http://cranlogs.r-pkg.org/badges/grand-total/gtfsio?color=yellow)](https://CRAN.R-project.org/package=gtfsio)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5337518.svg)](https://zenodo.org/record/5337518)
 
 **gtfsio** offers tools for the development of GTFS-related packages. It
 establishes a standard for representing GTFS feeds using R data types
@@ -33,7 +35,7 @@ Development version:
 ``` r
 install.packages("gtfsio", repos = "https://dhersz.r-universe.dev")
 
-#or
+# or
 # install.packages("remotes")
 remotes::install_github("r-transit/gtfsio")
 ```
@@ -50,11 +52,12 @@ path <- system.file("extdata/ggl_gtfs.zip", package = "gtfsio")
 gtfs <- import_gtfs(path)
 
 names(gtfs)
-#>  [1] "calendar_dates"  "fare_attributes" "fare_rules"      "feed_info"      
-#>  [5] "frequencies"     "levels"          "pathways"        "routes"         
-#>  [9] "shapes"          "stop_times"      "stops"           "transfers"      
-#> [13] "translations"    "trips"           "agency"          "attributions"   
-#> [17] "calendar"
+#>  [1] "calendar_dates"  "fare_attributes" "fare_rules"     
+#>  [4] "feed_info"       "frequencies"     "levels"         
+#>  [7] "pathways"        "routes"          "shapes"         
+#> [10] "stop_times"      "stops"           "transfers"      
+#> [13] "translations"    "trips"           "agency"         
+#> [16] "attributions"    "calendar"
 ```
 
 `import_gtfs()` returns a `gtfs` object. The `gtfs` class might be
@@ -63,7 +66,7 @@ provided by **gtfsio**:
 
 ``` r
 class(gtfs)
-#> [1] "gtfs"
+#> [1] "gtfs" "list"
 ```
 
 Use the `export_gtfs()` function to write GTFS objects to disk:
@@ -74,12 +77,15 @@ tmpf <- tempfile(fileext = ".zip")
 export_gtfs(gtfs, tmpf)
 
 zip::zip_list(tmpf)$filename
-#>  [1] "calendar_dates.txt"  "fare_attributes.txt" "fare_rules.txt"     
-#>  [4] "feed_info.txt"       "frequencies.txt"     "levels.txt"         
-#>  [7] "pathways.txt"        "routes.txt"          "shapes.txt"         
-#> [10] "stop_times.txt"      "stops.txt"           "transfers.txt"      
-#> [13] "translations.txt"    "trips.txt"           "agency.txt"         
-#> [16] "attributions.txt"    "calendar.txt"
+#>  [1] "calendar_dates.txt"  "fare_attributes.txt"
+#>  [3] "fare_rules.txt"      "feed_info.txt"      
+#>  [5] "frequencies.txt"     "levels.txt"         
+#>  [7] "pathways.txt"        "routes.txt"         
+#>  [9] "shapes.txt"          "stop_times.txt"     
+#> [11] "stops.txt"           "transfers.txt"      
+#> [13] "translations.txt"    "trips.txt"          
+#> [15] "agency.txt"          "attributions.txt"   
+#> [17] "calendar.txt"
 ```
 
 For a more complete demonstration please read the [introductory
@@ -87,10 +93,10 @@ vignette](https://r-transit.github.io/gtfsio/articles/gtfsio.html).
 
 ## GTFS-related packages
 
--   [`{tidytransit}`](https://github.com/r-transit/tidytransit)
--   [`{gtfs2gps}`](https://github.com/ipeaGIT/gtfs2gps)
--   [`{gtfsrouter}`](https://github.com/ATFutures/gtfs-router)
--   [`{gtfstools}`](https://github.com/ipeaGIT/gtfstools)
+  - [`{tidytransit}`](https://github.com/r-transit/tidytransit)
+  - [`{gtfs2gps}`](https://github.com/ipeaGIT/gtfs2gps)
+  - [`{gtfsrouter}`](https://github.com/ATFutures/gtfs-router)
+  - [`{gtfstools}`](https://github.com/ipeaGIT/gtfstools)
 
 ## Citation
 
@@ -99,20 +105,22 @@ citation("gtfsio")
 #> 
 #> To cite gtfsio in publications use:
 #> 
-#>   Daniel Herszenhut & Flavio Poletti. (2021, June 6). gtfsio: Read and
-#>   Write General Transit Feed Specification (GTFS) Files (Version
-#>   v0.1.2). Zenodo. http://doi.org/10.5281/zenodo.4904777
+#>   Daniel Herszenhut, Flavio Poletti & Mark Padgham.
+#>   (2021, August). gtfsio: Read and Write General
+#>   Transit Feed Specification (GTFS) Files (Version
+#>   v0.2.0). Zenodo.
+#>   http://doi.org/10.5281/zenodo.5337518
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
 #>     title = {gtfsio: Read and Write General Transit Feed Specification (GTFS) Files},
-#>     author = {Daniel Herszenhut and Flavio Poletti},
-#>     month = {jun},
+#>     author = {Daniel Herszenhut and Flavio Poletti and Mark Padgham},
+#>     month = {aug},
 #>     year = {2021},
 #>     publisher = {Zenodo},
-#>     version = {v0.1.2},
-#>     doi = {10.5281/zenodo.4904777},
-#>     url = {https://doi.org/10.5281/zenodo.4904777},
+#>     version = {v0.2.0},
+#>     doi = {10.5281/zenodo.5337518},
+#>     url = {https://doi.org/10.5281/zenodo.5337518},
 #>   }
 ```

@@ -14,7 +14,6 @@
 
 <title>Introduction to gtfsio</title>
 
-<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -35,27 +34,26 @@
   }
 </style>
 <style type="text/css" data-origin="pandoc">
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -64,9 +62,9 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  {  }
 @media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+a.sourceLine::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -124,7 +122,187 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 
 
@@ -147,17 +325,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="installation" class="section level1">
 <h1>Installation</h1>
 <p>Before using <strong>gtfsio</strong> please make sure that you have it installed in your computer. You can download either the most stable version from CRAN or the development version from GitHub:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stable version</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;gtfsio&quot;</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># development version</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;r-transit/gtfsio&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># stable version</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">install.packages</span>(<span class="st">&quot;gtfsio&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co"># development version</span></a>
+<a class="sourceLine" id="cb1-5" title="5">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;r-transit/gtfsio&quot;</span>)</a></code></pre></div>
 <p>Then attach it to the current R session:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtfsio)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">library</span>(gtfsio)</a></code></pre></div>
 <p>Throughout this demonstration we will be using a few sample files included in the package:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_dir <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="at">package =</span> <span class="st">&quot;gtfsio&quot;</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(data_dir)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;bad_gtfs.zip&quot; &quot;ggl_gtfs.zip&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">data_dir &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;gtfsio&quot;</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="kw">list.files</span>(data_dir)</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt; [1] &quot;bad_gtfs.zip&quot; &quot;ggl_gtfs.zip&quot;</span></a></code></pre></div>
 <ul>
 <li><code>ggl_gtfs.zip</code> has been manually built from the <a href="https://developers.google.com/transit/gtfs/examples/gtfs-feed">example GTFS feed</a> provided by Google. The files samples are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 License</a>.</li>
 <li><code>bad_gtfs.zip</code> is a modified version of <code>ggl_gtfs.zip</code> that includes some issues frequently found in GTFS data.</li>
@@ -168,175 +346,175 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="reading-feeds" class="section level2">
 <h2>Reading feeds</h2>
 <p>To read a feed use the <code>import_gtfs()</code> function. It takes either a local path or an URL to a GTFS <code>.zip</code> file and returns a GTFS object (which is, basically, a <code>list</code> of data frames):</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>gtfs_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(data_dir, <span class="st">&quot;ggl_gtfs.zip&quot;</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>gtfs_url  <span class="ot">&lt;-</span> <span class="st">&quot;https://github.com/r-transit/gtfsio/raw/master/inst/extdata/ggl_gtfs.zip&quot;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>gtfs_from_path <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(gtfs_path)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(gtfs_from_path)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;calendar_dates&quot;  &quot;fare_attributes&quot; &quot;fare_rules&quot;      &quot;feed_info&quot;      </span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;frequencies&quot;     &quot;levels&quot;          &quot;pathways&quot;        &quot;routes&quot;         </span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;shapes&quot;          &quot;stop_times&quot;      &quot;stops&quot;           &quot;transfers&quot;      </span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] &quot;translations&quot;    &quot;trips&quot;           &quot;agency&quot;          &quot;attributions&quot;   </span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] &quot;calendar&quot;</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>gtfs_from_url <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(gtfs_url)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(gtfs_from_url)</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;calendar_dates&quot;  &quot;fare_attributes&quot; &quot;fare_rules&quot;      &quot;feed_info&quot;      </span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;frequencies&quot;     &quot;levels&quot;          &quot;pathways&quot;        &quot;routes&quot;         </span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;shapes&quot;          &quot;stop_times&quot;      &quot;stops&quot;           &quot;transfers&quot;      </span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] &quot;translations&quot;    &quot;trips&quot;           &quot;agency&quot;          &quot;attributions&quot;   </span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] &quot;calendar&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">gtfs_path &lt;-<span class="st"> </span><span class="kw">file.path</span>(data_dir, <span class="st">&quot;ggl_gtfs.zip&quot;</span>)</a>
+<a class="sourceLine" id="cb4-2" title="2">gtfs_url  &lt;-<span class="st"> &quot;https://github.com/r-transit/gtfsio/raw/master/inst/extdata/ggl_gtfs.zip&quot;</span></a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4">gtfs_from_path &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_path)</a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="kw">names</span>(gtfs_from_path)</a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt;  [1] &quot;calendar_dates&quot;  &quot;fare_attributes&quot; &quot;fare_rules&quot;      &quot;feed_info&quot;      </span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt;  [5] &quot;frequencies&quot;     &quot;levels&quot;          &quot;pathways&quot;        &quot;routes&quot;         </span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt;  [9] &quot;shapes&quot;          &quot;stop_times&quot;      &quot;stops&quot;           &quot;transfers&quot;      </span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt; [13] &quot;translations&quot;    &quot;trips&quot;           &quot;agency&quot;          &quot;attributions&quot;   </span></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="co">#&gt; [17] &quot;calendar&quot;</span></a>
+<a class="sourceLine" id="cb4-11" title="11"></a>
+<a class="sourceLine" id="cb4-12" title="12">gtfs_from_url &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_url)</a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="kw">names</span>(gtfs_from_url)</a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt;  [1] &quot;calendar_dates&quot;  &quot;fare_attributes&quot; &quot;fare_rules&quot;      &quot;feed_info&quot;      </span></a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt;  [5] &quot;frequencies&quot;     &quot;levels&quot;          &quot;pathways&quot;        &quot;routes&quot;         </span></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt;  [9] &quot;shapes&quot;          &quot;stop_times&quot;      &quot;stops&quot;           &quot;transfers&quot;      </span></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt; [13] &quot;translations&quot;    &quot;trips&quot;           &quot;agency&quot;          &quot;attributions&quot;   </span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="co">#&gt; [17] &quot;calendar&quot;</span></a></code></pre></div>
 <p>The function reads, by default, all <code>.txt</code> files contained in the <code>.zip</code> file. Alternatively, you can specify which files should be read with the <code>files</code> argument (note: without the <code>.txt</code> extension):</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>gtfs <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(gtfs_path, <span class="at">files =</span> <span class="fu">c</span>(<span class="st">&quot;shapes&quot;</span>, <span class="st">&quot;trips&quot;</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>gtfs</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $shapes</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    shape_id shape_pt_lat shape_pt_lon shape_pt_sequence shape_dist_traveled</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:    A_shp     37.61956    -122.4816                 1              0.0000</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:    A_shp     37.64430    -122.4107                 2              6.8310</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3:    A_shp     37.65863    -122.3084                 3             15.8765</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $trips</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    route_id service_id trip_id trip_headsign block_id</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:        A         WE    AWE1      Downtown        1</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:        A         WE    AWE2      Downtown        2</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_path, <span class="dt">files =</span> <span class="kw">c</span>(<span class="st">&quot;shapes&quot;</span>, <span class="st">&quot;trips&quot;</span>))</a>
+<a class="sourceLine" id="cb5-2" title="2"></a>
+<a class="sourceLine" id="cb5-3" title="3">gtfs</a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; $shapes</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt;    shape_id shape_pt_lat shape_pt_lon shape_pt_sequence shape_dist_traveled</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt; 1:    A_shp     37.61956    -122.4816                 1              0.0000</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; 2:    A_shp     37.64430    -122.4107                 2              6.8310</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; 3:    A_shp     37.65863    -122.3084                 3             15.8765</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt; $trips</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt;    route_id service_id trip_id trip_headsign block_id</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co">#&gt; 1:        A         WE    AWE1      Downtown        1</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="co">#&gt; 2:        A         WE    AWE2      Downtown        2</span></a></code></pre></div>
 <p>Similarly, you can use the <code>fields</code> argument to read only a few selective fields of a file. These arguments can be combined, offering a great deal of flexibility that can translate into very fast reading times.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gtfs <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  gtfs_path,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">files =</span> <span class="fu">c</span>(<span class="st">&quot;shapes&quot;</span>, <span class="st">&quot;trips&quot;</span>),</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fields =</span> <span class="fu">list</span>(<span class="at">trips =</span> <span class="fu">c</span>(<span class="st">&quot;trip_id&quot;</span>, <span class="st">&quot;route_id&quot;</span>))</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>gtfs</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $shapes</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    shape_id shape_pt_lat shape_pt_lon shape_pt_sequence shape_dist_traveled</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:    A_shp     37.61956    -122.4816                 1              0.0000</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:    A_shp     37.64430    -122.4107                 2              6.8310</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3:    A_shp     37.65863    -122.3084                 3             15.8765</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $trips</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    trip_id route_id</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:    AWE1        A</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:    AWE2        A</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(</a>
+<a class="sourceLine" id="cb6-2" title="2">  gtfs_path,</a>
+<a class="sourceLine" id="cb6-3" title="3">  <span class="dt">files =</span> <span class="kw">c</span>(<span class="st">&quot;shapes&quot;</span>, <span class="st">&quot;trips&quot;</span>),</a>
+<a class="sourceLine" id="cb6-4" title="4">  <span class="dt">fields =</span> <span class="kw">list</span>(<span class="dt">trips =</span> <span class="kw">c</span>(<span class="st">&quot;trip_id&quot;</span>, <span class="st">&quot;route_id&quot;</span>))</a>
+<a class="sourceLine" id="cb6-5" title="5">)</a>
+<a class="sourceLine" id="cb6-6" title="6"></a>
+<a class="sourceLine" id="cb6-7" title="7">gtfs</a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt; $shapes</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">#&gt;    shape_id shape_pt_lat shape_pt_lon shape_pt_sequence shape_dist_traveled</span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">#&gt; 1:    A_shp     37.61956    -122.4816                 1              0.0000</span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co">#&gt; 2:    A_shp     37.64430    -122.4107                 2              6.8310</span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt; 3:    A_shp     37.65863    -122.3084                 3             15.8765</span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co">#&gt; $trips</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt;    trip_id route_id</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="co">#&gt; 1:    AWE1        A</span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="co">#&gt; 2:    AWE2        A</span></a></code></pre></div>
 <p>These fields are parsed according to the standards for reading and writing GTFS feeds in R. Undocumented files and fields (i.e. not specified in the <a href="https://developers.google.com/transit/gtfs/reference">GTFS reference</a>) are read as <code>character</code>, by default. You can overrule this default with <code>extra_spec</code> (note that only undocumented fields should be specified in this argument). <code>ggl_gtfs.zip</code> contains an undocumented field in the <code>levels.txt</code> file, named <code>elevation</code>. Let’s check the effect of <code>extra_spec</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>gtfs <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(gtfs_path, <span class="at">files =</span> <span class="st">&quot;levels&quot;</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>gtfs<span class="sc">$</span>levels</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    level_id level_index level_name elevation</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:       L0           0     Street         0</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:       L1          -1  Mezzanine        -6</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3:       L2          -2 Southbound       -18</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4:       L3          -3 Northbound       -24</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(gtfs<span class="sc">$</span>levels<span class="sc">$</span>elevation)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;character&quot;</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>gtfs <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  gtfs_path, </span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">files =</span> <span class="st">&quot;levels&quot;</span>, </span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">extra_spec =</span> <span class="fu">list</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="at">elevation =</span> <span class="st">&quot;integer&quot;</span>))</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>gtfs<span class="sc">$</span>levels</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    level_id level_index level_name elevation</span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1:       L0           0     Street         0</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2:       L1          -1  Mezzanine        -6</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3:       L2          -2 Southbound       -18</span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4:       L3          -3 Northbound       -24</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(gtfs<span class="sc">$</span>levels<span class="sc">$</span>elevation)</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;integer&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_path, <span class="dt">files =</span> <span class="st">&quot;levels&quot;</span>)</a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3">gtfs<span class="op">$</span>levels</a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;    level_id level_index level_name elevation</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; 1:       L0           0     Street         0</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt; 2:       L1          -1  Mezzanine        -6</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt; 3:       L2          -2 Southbound       -18</span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt; 4:       L3          -3 Northbound       -24</span></a>
+<a class="sourceLine" id="cb7-9" title="9"></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="kw">class</span>(gtfs<span class="op">$</span>levels<span class="op">$</span>elevation)</a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="co">#&gt; [1] &quot;character&quot;</span></a>
+<a class="sourceLine" id="cb7-12" title="12"></a>
+<a class="sourceLine" id="cb7-13" title="13">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(</a>
+<a class="sourceLine" id="cb7-14" title="14">  gtfs_path, </a>
+<a class="sourceLine" id="cb7-15" title="15">  <span class="dt">files =</span> <span class="st">&quot;levels&quot;</span>, </a>
+<a class="sourceLine" id="cb7-16" title="16">  <span class="dt">extra_spec =</span> <span class="kw">list</span>(<span class="dt">levels =</span> <span class="kw">c</span>(<span class="dt">elevation =</span> <span class="st">&quot;integer&quot;</span>))</a>
+<a class="sourceLine" id="cb7-17" title="17">)</a>
+<a class="sourceLine" id="cb7-18" title="18"></a>
+<a class="sourceLine" id="cb7-19" title="19">gtfs<span class="op">$</span>levels</a>
+<a class="sourceLine" id="cb7-20" title="20"><span class="co">#&gt;    level_id level_index level_name elevation</span></a>
+<a class="sourceLine" id="cb7-21" title="21"><span class="co">#&gt; 1:       L0           0     Street         0</span></a>
+<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt; 2:       L1          -1  Mezzanine        -6</span></a>
+<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt; 3:       L2          -2 Southbound       -18</span></a>
+<a class="sourceLine" id="cb7-24" title="24"><span class="co">#&gt; 4:       L3          -3 Northbound       -24</span></a>
+<a class="sourceLine" id="cb7-25" title="25"></a>
+<a class="sourceLine" id="cb7-26" title="26"><span class="kw">class</span>(gtfs<span class="op">$</span>levels<span class="op">$</span>elevation)</a>
+<a class="sourceLine" id="cb7-27" title="27"><span class="co">#&gt; [1] &quot;integer&quot;</span></a></code></pre></div>
 </div>
 <div id="writing-feeds" class="section level2">
 <h2>Writing feeds</h2>
 <p>Use <code>export_gtfs()</code> to write a GTFS object to disk. Please note that the function assumes that the object is formatted according to the standards for reading and writing GTFS feeds in <strong>R</strong> - i.e. if it’s not, any conversions should be done before using <code>export_gtfs()</code>.</p>
 <p>Objects are written as <code>.zip</code> feeds by default, but you can also write them as directories using the <code>as_dir</code> argument:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>gtfs <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(gtfs_path)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>tmpf <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">&quot;.zip&quot;</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>tmpd <span class="ot">&lt;-</span> <span class="fu">tempfile</span>()</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">export_gtfs</span>(gtfs, tmpf)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>zip<span class="sc">::</span><span class="fu">zip_list</span>(tmpf)<span class="sc">$</span>filename</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;calendar_dates.txt&quot;  &quot;fare_attributes.txt&quot; &quot;fare_rules.txt&quot;     </span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] &quot;feed_info.txt&quot;       &quot;frequencies.txt&quot;     &quot;levels.txt&quot;         </span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;pathways.txt&quot;        &quot;routes.txt&quot;          &quot;shapes.txt&quot;         </span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] &quot;stop_times.txt&quot;      &quot;stops.txt&quot;           &quot;transfers.txt&quot;      </span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] &quot;translations.txt&quot;    &quot;trips.txt&quot;           &quot;agency.txt&quot;         </span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [16] &quot;attributions.txt&quot;    &quot;calendar.txt&quot;</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">export_gtfs</span>(gtfs, tmpd, <span class="at">as_dir =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>(tmpd)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;agency.txt&quot;          &quot;attributions.txt&quot;    &quot;calendar.txt&quot;       </span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [4] &quot;calendar_dates.txt&quot;  &quot;fare_attributes.txt&quot; &quot;fare_rules.txt&quot;     </span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [7] &quot;feed_info.txt&quot;       &quot;frequencies.txt&quot;     &quot;levels.txt&quot;         </span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [10] &quot;pathways.txt&quot;        &quot;routes.txt&quot;          &quot;shapes.txt&quot;         </span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] &quot;stop_times.txt&quot;      &quot;stops.txt&quot;           &quot;transfers.txt&quot;      </span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [16] &quot;translations.txt&quot;    &quot;trips.txt&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_path)</a>
+<a class="sourceLine" id="cb8-2" title="2">tmpf &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">&quot;.zip&quot;</span>)</a>
+<a class="sourceLine" id="cb8-3" title="3">tmpd &lt;-<span class="st"> </span><span class="kw">tempfile</span>()</a>
+<a class="sourceLine" id="cb8-4" title="4"></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="kw">export_gtfs</span>(gtfs, tmpf)</a>
+<a class="sourceLine" id="cb8-6" title="6">zip<span class="op">::</span><span class="kw">zip_list</span>(tmpf)<span class="op">$</span>filename</a>
+<a class="sourceLine" id="cb8-7" title="7"><span class="co">#&gt;  [1] &quot;calendar_dates.txt&quot;  &quot;fare_attributes.txt&quot; &quot;fare_rules.txt&quot;     </span></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">#&gt;  [4] &quot;feed_info.txt&quot;       &quot;frequencies.txt&quot;     &quot;levels.txt&quot;         </span></a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="co">#&gt;  [7] &quot;pathways.txt&quot;        &quot;routes.txt&quot;          &quot;shapes.txt&quot;         </span></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="co">#&gt; [10] &quot;stop_times.txt&quot;      &quot;stops.txt&quot;           &quot;transfers.txt&quot;      </span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="co">#&gt; [13] &quot;translations.txt&quot;    &quot;trips.txt&quot;           &quot;agency.txt&quot;         </span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="co">#&gt; [16] &quot;attributions.txt&quot;    &quot;calendar.txt&quot;</span></a>
+<a class="sourceLine" id="cb8-13" title="13"></a>
+<a class="sourceLine" id="cb8-14" title="14"><span class="kw">export_gtfs</span>(gtfs, tmpd, <span class="dt">as_dir =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="kw">list.files</span>(tmpd)</a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="co">#&gt;  [1] &quot;agency.txt&quot;          &quot;attributions.txt&quot;    &quot;calendar.txt&quot;       </span></a>
+<a class="sourceLine" id="cb8-17" title="17"><span class="co">#&gt;  [4] &quot;calendar_dates.txt&quot;  &quot;fare_attributes.txt&quot; &quot;fare_rules.txt&quot;     </span></a>
+<a class="sourceLine" id="cb8-18" title="18"><span class="co">#&gt;  [7] &quot;feed_info.txt&quot;       &quot;frequencies.txt&quot;     &quot;levels.txt&quot;         </span></a>
+<a class="sourceLine" id="cb8-19" title="19"><span class="co">#&gt; [10] &quot;pathways.txt&quot;        &quot;routes.txt&quot;          &quot;shapes.txt&quot;         </span></a>
+<a class="sourceLine" id="cb8-20" title="20"><span class="co">#&gt; [13] &quot;stop_times.txt&quot;      &quot;stops.txt&quot;           &quot;transfers.txt&quot;      </span></a>
+<a class="sourceLine" id="cb8-21" title="21"><span class="co">#&gt; [16] &quot;translations.txt&quot;    &quot;trips.txt&quot;</span></a></code></pre></div>
 <p>The function defaults to writing every element inside a GTFS object as a <code>.txt</code> file. As with <code>import_gtfs()</code>, use the <code>files</code> argument to overrule this behaviour:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">export_gtfs</span>(gtfs, tmpf, <span class="at">files =</span> <span class="fu">c</span>(<span class="st">&quot;shapes&quot;</span>, <span class="st">&quot;trips&quot;</span>))</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>zip<span class="sc">::</span><span class="fu">zip_list</span>(tmpf)<span class="sc">$</span>filename</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] &quot;shapes.txt&quot; &quot;trips.txt&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">export_gtfs</span>(gtfs, tmpf, <span class="dt">files =</span> <span class="kw">c</span>(<span class="st">&quot;shapes&quot;</span>, <span class="st">&quot;trips&quot;</span>))</a>
+<a class="sourceLine" id="cb9-2" title="2">zip<span class="op">::</span><span class="kw">zip_list</span>(tmpf)<span class="op">$</span>filename</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co">#&gt; [1] &quot;shapes.txt&quot; &quot;trips.txt&quot;</span></a></code></pre></div>
 <p>You can also use the <code>standard_only</code> argument to export only files and fields specified in the <a href="https://developers.google.com/transit/gtfs/reference">GTFS reference</a> (i.e. to leave out undocumented files/fields). In the example below, <code>extra_gtfs</code> contains both an undocumented file (<code>extra_file</code>) and an undocumented field in a regular file (<code>levels$elevation</code>) that are not written to disk when using <code>export_gtfs()</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>extra_gtfs <span class="ot">&lt;-</span> gtfs</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>extra_gtfs<span class="sc">$</span>extra_file <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">column =</span> <span class="st">&quot;value&quot;</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">export_gtfs</span>(extra_gtfs, tmpd, <span class="at">as_dir =</span> <span class="cn">TRUE</span>, <span class="at">standard_only =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;extra_file&quot;</span> <span class="sc">%in%</span> <span class="fu">sub</span>(<span class="st">&quot;.txt&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">list.files</span>(tmpd))</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>levels_fields <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(tmpd, <span class="st">&quot;levels.txt&quot;</span>), <span class="at">n =</span> 1L)</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">grepl</span>(<span class="st">&quot;elevation&quot;</span>, levels_fields)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">extra_gtfs &lt;-<span class="st"> </span>gtfs</a>
+<a class="sourceLine" id="cb10-2" title="2">extra_gtfs<span class="op">$</span>extra_file &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">column =</span> <span class="st">&quot;value&quot;</span>)</a>
+<a class="sourceLine" id="cb10-3" title="3"></a>
+<a class="sourceLine" id="cb10-4" title="4"><span class="kw">export_gtfs</span>(extra_gtfs, tmpd, <span class="dt">as_dir =</span> <span class="ot">TRUE</span>, <span class="dt">standard_only =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb10-5" title="5"></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="st">&quot;extra_file&quot;</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">sub</span>(<span class="st">&quot;.txt&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">list.files</span>(tmpd))</a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="co">#&gt; [1] FALSE</span></a>
+<a class="sourceLine" id="cb10-8" title="8"></a>
+<a class="sourceLine" id="cb10-9" title="9">levels_fields &lt;-<span class="st"> </span><span class="kw">readLines</span>(<span class="kw">file.path</span>(tmpd, <span class="st">&quot;levels.txt&quot;</span>), <span class="dt">n =</span> 1L)</a>
+<a class="sourceLine" id="cb10-10" title="10"><span class="kw">grepl</span>(<span class="st">&quot;elevation&quot;</span>, levels_fields)</a>
+<a class="sourceLine" id="cb10-11" title="11"><span class="co">#&gt; [1] FALSE</span></a></code></pre></div>
 </div>
 <div id="checking-gtfs-objects" class="section level2">
 <h2>Checking GTFS objects</h2>
 <p><strong>gtfsio</strong> also includes functions to check the structure of GTFS objects. <code>check_files_exist()</code> checks the existence of elements representing specific text files inside an object. It returns <code>TRUE</code> if the check is successful, and <code>FALSE</code> otherwise. <code>assert_files_exist()</code> invisibly returns the object if successful, and throws an error otherwise:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gtfs <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(gtfs_path, <span class="at">files =</span> <span class="fu">c</span>(<span class="st">&quot;shapes&quot;</span>, <span class="st">&quot;trips&quot;</span>))</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_files_exist</span>(gtfs, <span class="st">&quot;shapes&quot;</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">check_files_exist</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">assert_files_exist</span>(gtfs, <span class="st">&quot;shapes&quot;</span>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">assert_files_exist</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in assert_files_exist(gtfs, &quot;stop_times&quot;): The GTFS object is missing the following required element(s): &#39;stop_times&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_path, <span class="dt">files =</span> <span class="kw">c</span>(<span class="st">&quot;shapes&quot;</span>, <span class="st">&quot;trips&quot;</span>))</a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">check_files_exist</span>(gtfs, <span class="st">&quot;shapes&quot;</span>)</a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co">#&gt; [1] TRUE</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="kw">check_files_exist</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>)</a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="co">#&gt; [1] FALSE</span></a>
+<a class="sourceLine" id="cb11-7" title="7"></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="kw">assert_files_exist</span>(gtfs, <span class="st">&quot;shapes&quot;</span>)</a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="kw">assert_files_exist</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>)</a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt; Error in assert_files_exist(gtfs, &quot;stop_times&quot;): The GTFS object is missing the following required element(s): &#39;stop_times&#39;</span></a></code></pre></div>
 <p><code>check_fields_exist()</code> checks the existence of fields, represented by columns, inside GTFS objects. It returns <code>TRUE</code> if the check is successful, and <code>FALSE</code> otherwise. <code>assert_fields_exist()</code> invisibly returns the object if successful, and throws an error otherwise:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>gtfs <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  gtfs_path, </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">files =</span> <span class="st">&quot;trips&quot;</span>, </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fields =</span> <span class="fu">list</span>(<span class="at">trips =</span> <span class="st">&quot;trip_id&quot;</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">check_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;trip_id&quot;</span>)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="fu">check_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;shape_id&quot;</span>)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="fu">assert_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;trip_id&quot;</span>)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">assert_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;shape_id&quot;</span>)</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in assert_fields_exist(gtfs, &quot;trips&quot;, fields = &quot;shape_id&quot;): The GTFS object &#39;trips&#39; element is missing the following required column(s): &#39;shape_id&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(</a>
+<a class="sourceLine" id="cb12-2" title="2">  gtfs_path, </a>
+<a class="sourceLine" id="cb12-3" title="3">  <span class="dt">files =</span> <span class="st">&quot;trips&quot;</span>, </a>
+<a class="sourceLine" id="cb12-4" title="4">  <span class="dt">fields =</span> <span class="kw">list</span>(<span class="dt">trips =</span> <span class="st">&quot;trip_id&quot;</span>)</a>
+<a class="sourceLine" id="cb12-5" title="5">)</a>
+<a class="sourceLine" id="cb12-6" title="6"></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="kw">check_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;trip_id&quot;</span>)</a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="co">#&gt; [1] TRUE</span></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="kw">check_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;shape_id&quot;</span>)</a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="co">#&gt; [1] FALSE</span></a>
+<a class="sourceLine" id="cb12-11" title="11"></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="kw">assert_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;trip_id&quot;</span>)</a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="kw">assert_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;shape_id&quot;</span>)</a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="co">#&gt; Error in assert_fields_exist(gtfs, &quot;trips&quot;, fields = &quot;shape_id&quot;): The GTFS object &#39;trips&#39; element is missing the following required column(s): &#39;shape_id&#39;</span></a></code></pre></div>
 <p><code>check_fields_types()</code> checks the types of fields inside GTFS objects. It returns <code>TRUE</code> if the check is successful, and <code>FALSE</code> otherwise. <code>assert_fields_types()</code> invisibly returns the object if successful, and throws an error otherwise:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>gtfs <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(gtfs_path, <span class="at">files =</span> <span class="st">&quot;levels&quot;</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="at">types =</span> <span class="st">&quot;character&quot;</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">check_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="at">types =</span> <span class="st">&quot;integer&quot;</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">assert_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="at">types =</span> <span class="st">&quot;character&quot;</span>)</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">assert_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="at">types =</span> <span class="st">&quot;integer&quot;</span>)</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in assert_fields_types(gtfs, &quot;levels&quot;, fields = &quot;elevation&quot;, types = &quot;integer&quot;): The following columns in the GTFS object &#39;levels&#39; element do not inherit from the required types:</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   - &#39;elevation&#39;: requires integer, but inherits from character</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_path, <span class="dt">files =</span> <span class="st">&quot;levels&quot;</span>)</a>
+<a class="sourceLine" id="cb13-2" title="2"></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="kw">check_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;character&quot;</span>)</a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">#&gt; [1] TRUE</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="kw">check_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;integer&quot;</span>)</a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="co">#&gt; [1] FALSE</span></a>
+<a class="sourceLine" id="cb13-7" title="7"></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="kw">assert_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;character&quot;</span>)</a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="kw">assert_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;integer&quot;</span>)</a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="co">#&gt; Error in assert_fields_types(gtfs, &quot;levels&quot;, fields = &quot;elevation&quot;, types = &quot;integer&quot;): The following columns in the GTFS object &#39;levels&#39; element do not inherit from the required types:</span></a>
+<a class="sourceLine" id="cb13-11" title="11"><span class="co">#&gt;   - &#39;elevation&#39;: requires integer, but inherits from character</span></a></code></pre></div>
 <p>Please notes that “lower-level” checks are conducted inside each function - e.g. before checking the type of a field, first the existence of such field is checked:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>gtfs <span class="ot">&lt;-</span> <span class="fu">import_gtfs</span>(gtfs_path, <span class="at">files =</span> <span class="st">&quot;shapes&quot;</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_fields_types</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;stop_id&quot;</span>, <span class="at">types =</span> <span class="st">&quot;character&quot;</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">assert_fields_types</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>, <span class="at">fileds =</span> <span class="st">&quot;stop_id&quot;</span>, <span class="at">types =</span> <span class="st">&quot;character&quot;</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error in assert_fields_types(gtfs, &quot;stop_times&quot;, fileds = &quot;stop_id&quot;, types = &quot;character&quot;): unused argument (fileds = &quot;stop_id&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_path, <span class="dt">files =</span> <span class="st">&quot;shapes&quot;</span>)</a>
+<a class="sourceLine" id="cb14-2" title="2"></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">check_fields_types</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;stop_id&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;character&quot;</span>)</a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">#&gt; [1] FALSE</span></a>
+<a class="sourceLine" id="cb14-5" title="5"></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="kw">assert_fields_types</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>, <span class="dt">fileds =</span> <span class="st">&quot;stop_id&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;character&quot;</span>)</a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="co">#&gt; Error in assert_fields_types(gtfs, &quot;stop_times&quot;, fileds = &quot;stop_id&quot;, types = &quot;character&quot;): unused argument (fileds = &quot;stop_id&quot;)</span></a></code></pre></div>
 <p>These functions are great for package interoperability. If two distinct packages represent GTFS text files using the same data structure (both <code>{gtfstools}</code> and <code>{gtfsrouter}</code> use <code>data.table</code>s, for example), they just need to add some basic checks before proceeding with operations on objects created by the other package.</p>
 <p>So, if <code>{gtfsrouter}</code> requires the <code>transfers</code> element to perform some operations, it might as well perform them on an object created by <code>{gtfstools}</code>, as long as it contains a <code>transfers</code> element. Thus, it could greatly benefit of some <code>assert_*</code>/<code>check_*</code> calls before proceeding with such operations.</p>
 </div>
