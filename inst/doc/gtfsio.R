@@ -88,38 +88,38 @@ grepl("elevation", levels_fields)
 ## ---- error = TRUE------------------------------------------------------------
 gtfs <- import_gtfs(gtfs_path, files = c("shapes", "trips"))
 
-check_files_exist(gtfs, "shapes")
-check_files_exist(gtfs, "stop_times")
+check_file_exists(gtfs, "shapes")
+check_file_exists(gtfs, "stop_times")
 
-assert_files_exist(gtfs, "shapes")
-assert_files_exist(gtfs, "stop_times")
+assert_file_exists(gtfs, "shapes")
+assert_file_exists(gtfs, "stop_times")
 
 ## ---- error = TRUE------------------------------------------------------------
 gtfs <- import_gtfs(
-  gtfs_path, 
-  files = "trips", 
+  gtfs_path,
+  files = "trips",
   fields = list(trips = "trip_id")
 )
 
-check_fields_exist(gtfs, "trips", fields = "trip_id")
-check_fields_exist(gtfs, "trips", fields = "shape_id")
+check_field_exists(gtfs, "trips", fields = "trip_id")
+check_field_exists(gtfs, "trips", fields = "shape_id")
 
-assert_fields_exist(gtfs, "trips", fields = "trip_id")
-assert_fields_exist(gtfs, "trips", fields = "shape_id")
+assert_field_exists(gtfs, "trips", fields = "trip_id")
+assert_field_exists(gtfs, "trips", fields = "shape_id")
 
 ## ---- error = TRUE------------------------------------------------------------
 gtfs <- import_gtfs(gtfs_path, files = "levels")
 
-check_fields_types(gtfs, "levels", fields = "elevation", types = "character")
-check_fields_types(gtfs, "levels", fields = "elevation", types = "integer")
+check_field_class(gtfs, "levels", fields = "elevation", classes = "character")
+check_field_class(gtfs, "levels", fields = "elevation", classes = "integer")
 
-assert_fields_types(gtfs, "levels", fields = "elevation", types = "character")
-assert_fields_types(gtfs, "levels", fields = "elevation", types = "integer")
+assert_field_class(gtfs, "levels", fields = "elevation", classes = "character")
+assert_field_class(gtfs, "levels", fields = "elevation", classes = "integer")
 
 ## ---- error = TRUE------------------------------------------------------------
 gtfs <- import_gtfs(gtfs_path, files = "shapes")
 
-check_fields_types(gtfs, "stop_times", fields = "stop_id", types = "character")
+check_field_class(gtfs, "stop_times", fields = "stop_id", classes = "character")
 
-assert_fields_types(gtfs, "stop_times", fileds = "stop_id", types = "character")
+assert_field_class(gtfs, "stop_times", fields = "stop_id", classes = "character")
 

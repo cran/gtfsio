@@ -75,51 +75,28 @@ import_gtfs <- function(path,
   # input checking ('files', 'fields' and 'extra_spec' are more thoroughly
   # validated further down the code)
 
-  if (!is.character(path) | length(path) > 1)
-    stop("'path' must be a character vector of length 1.")
+  val_enc <- c("unknown", "UTF-8", "Latin-1")
 
-  if (!grepl("\\.zip$", path)) stop("'path' must have '.zip' extension.")
+  assert_vector(path, "character", len = 1L)
+  assert_vector(quiet, "logical", len = 1L)
+  assert_list(extra_spec, null_ok = TRUE, named = TRUE)
+  assert_vector(files, "character", null_ok = TRUE)
+  assert_list(fields, null_ok = TRUE)
+  assert_vector(skip, "character", null_ok = TRUE)
+  assert_vector(encoding, "character", len = 1L, subset_of = val_enc)
+
+  if (!grepl("\\.zip$", path)) error_path_must_be_zip()
 
   path_is_url <- grepl("^http[s]?\\:\\/\\/\\.*", path)
 
-  if (!path_is_url & !file.exists(path))
-    stop("'path' points to non-existent file: '", path, "'")
+  if (!path_is_url & !file.exists(path)) error_non_existent_file(path)
+  if (!is.null(files) & !is.null(skip)) error_files_and_skip_provided()
 
-  if (!is.logical(quiet) | length(quiet) != 1)
-    stop("'quiet' must be a logical vector of length 1.")
-
-  if (!is.null(extra_spec) & !is.list(extra_spec))
-    stop("'extra_spec' must be either a list or NULL.")
-
-  for (input_types in extra_spec)
-    if (any(! input_types %chin% c("character", "integer", "numeric")))
-      stop("Only character, integer and numeric are supported in 'extra_spec'.")
-
-  if (!is.null(files) & !is.character(files))
-    stop("'files' must be either a character vector or NULL.")
-
-  if (!is.null(fields) & !is.list(fields))
-    stop("'fields' must be either a list or NULL.")
-
-  if (!is.null(skip) & !is.character(skip))
-    stop("'skip' must be either a character vector or NULL.")
-
-  if (!is.null(files) & !is.null(skip))
-    stop(
-      "Both 'files' and 'skip' were provided. ",
-      "Please use only one of these parameters at a time."
-    )
-
-  val_enc <- c("unknown", "UTF-8", "Latin-1")
-  if (
-    length(encoding) > 1 |
-    !is.character(encoding) |
-    !all(encoding %in% val_enc)
-  )
-    stop(
-      "'encoding' must be be a character vector of length 1 and one of ",
-      "c('unknown', 'UTF-8', 'Latin-1')."
-    )
+  for (input_types in extra_spec) {
+    if (any(! input_types %chin% c("character", "integer", "numeric"))) {
+      error_unsupported_extra_spec()
+    }
+  }
 
   # if 'path' is an URL, download it and save path to downloaded file to 'path'
 
@@ -142,34 +119,29 @@ import_gtfs <- function(path,
   # read only the text files specified either in 'files' or in 'skip'.
   # if both are NULL, read all text files
 
-  if (!is.null(files))
+  if (!is.null(files)) {
     files_to_read <- files
-  else if (!is.null(skip))
+  } else if (!is.null(skip)) {
     files_to_read <- setdiff(files_in_gtfs, skip)
-  else
+  } else {
     files_to_read <- files_in_gtfs
+  }
 
   # check if all specified files exist and raise an error if any does not
 
   missing_files <- files_to_read[! files_to_read %chin% files_in_gtfs]
-
-  if (!identical(missing_files, character(0)))
-    stop(
-      "The provided GTFS feed doesn't contain the following text file(s): ",
-      paste0("'", missing_files, "'", collapse = ", ")
-    )
+  if (!identical(missing_files, character(0))) {
+    error_gtfs_missing_files(missing_files)
+  }
 
   # raise an error if a file is specified in 'fields' but does not appear in
   # 'files_to_read'
 
   files_misspec <- names(fields)[! names(fields) %chin% files_to_read]
 
-  if (!is.null(files_misspec) & !identical(files_misspec, character(0)))
-    stop(
-      "The following files were specified in 'fields' but either were not ",
-      "specified in 'files' or do not exist: ",
-      paste0("'", files_misspec, "'", collapse = ", ")
-    )
+  if (!is.null(files_misspec) & !identical(files_misspec, character(0))) {
+    error_files_misspecified(files_misspec)
+  }
 
   # extract text files to temporary folder to later read them
   # 'unlink()' makes sure that previous imports don't interfere with current one
@@ -281,31 +253,29 @@ read_files <- function(file,
 
   spec_both <- names(extra_spec)[names(extra_spec) %chin% names(file_standards)]
 
-  if (any(names(extra_spec) %chin% names(file_standards)))
-    stop(
-      "The following field(s) from the '",
-      file,
-      "' file were specified in 'extra_spec' but are already documented in ",
-      "the official GTFS reference: ",
-      paste0("'", spec_both, "'", collapse = ", ")
-    )
+  if (any(names(extra_spec) %chin% names(file_standards))) {
+    error_field_is_documented(file, spec_both)
+  }
 
   # read 'file' first row to figure out which fields are present
   # if 'file_standards' is NULL then file is undocumented
 
-  if (is.null(file_standards) & !quiet)
+  if (is.null(file_standards) & !quiet) {
     message("  - File undocumented. Trying to read it as a csv.")
+  }
 
-  sample_dt <- data.table::fread(file.path(tmpdir, file_txt), nrows = 1)
+  sample_dt <- data.table::fread(
+    file.path(tmpdir, file_txt),
+    nrows = 1,
+    colClasses = "character"
+  )
 
   # if 'file' is completely empty (even without a header), return a NULL
   # 'data.table'
 
   if (ncol(sample_dt) == 0) {
-
     if (!quiet) message("  - File is empty. Returning a NULL data.table")
     return(data.table::data.table(NULL))
-
   }
 
   # retrieve which fields are inside the file
@@ -314,32 +284,28 @@ read_files <- function(file,
 
   # read all fields if 'fields' is NULL. else, only the ones specified
 
-  if (is.null(fields))
+  if (is.null(fields)) {
     fields_to_read <- fields_in_file
-  else
+  } else {
     fields_to_read <- fields
+  }
 
   # check if all specified fields exist and raise exception if any does not
 
   missing_fields <- fields_to_read[! fields_to_read %chin% fields_in_file]
 
-  if (!identical(missing_fields, character(0)))
-    stop(
-      "'", file, "' doesn't contain the following field(s): ",
-      paste0("'", missing_fields, "'", collapse = ", ")
-    )
+  if (!identical(missing_fields, character(0))) {
+    error_gtfs_missing_fields(file, missing_fields)
+  }
 
   # raise an error if a field was specified in 'extra_spec' but does not appear
   # in 'fields_to_read'
 
   fields_misspec <- setdiff(names(extra_spec), fields_to_read)
 
-  if (!is.null(fields_misspec) & !identical(fields_misspec, character(0)))
-    stop(
-      "The following fields were specified in 'extra_spec' but either were ",
-      "not specified in 'fields' or do not exist: ",
-      paste0("'", fields_misspec, "'", collapse = ", ")
-    )
+  if (!is.null(fields_misspec) & !identical(fields_misspec, character(0))) {
+    error_fields_misspec(fields_misspec)
+  }
 
   # get the standard data types of documented fields from 'file_standards'
 
@@ -383,4 +349,88 @@ read_files <- function(file,
 
   return(full_dt)
 
+}
+
+
+# errors ------------------------------------------------------------------
+
+
+error_path_must_be_zip <- parent_function_error(
+  "'path' must have '.zip' extension.",
+  subclass = "path_must_be_zip"
+)
+
+error_non_existent_file <- function(path) {
+  parent_call <- sys.call(-1)
+  message <- paste0("'path' points to non-existent file: '", path, "'")
+
+  gtfsio_error(message, subclass = "non_existent_file", call = parent_call)
+}
+
+error_files_and_skip_provided <- parent_function_error(
+  paste0(
+    "Both 'files' and 'skip' were provided. ",
+    "Please use only one of these parameters at a time."
+  ),
+  subclass = "files_and_skip_provided"
+)
+
+error_unsupported_extra_spec <- parent_function_error(
+  "Only character, integer and numeric are supported in 'extra_spec'.",
+  subclass = "unsupported_extra_spec"
+)
+
+error_gtfs_missing_files <- function(missing_files) {
+  parent_call <- sys.call(-1)
+  message <- paste0(
+    "The provided GTFS feed doesn't contain the following text file(s): ",
+    paste0("'", missing_files, "'", collapse = ", ")
+  )
+
+  gtfsio_error(message, subclass = "gtfs_missing_files", call = parent_call)
+}
+
+error_files_misspecified <- function(files_misspec) {
+  parent_call <- sys.call(-1)
+  message <- paste0(
+    "The following files were specified in 'fields' but either were not ",
+    "specified in 'files' or do not exist: ",
+    paste0("'", files_misspec, "'", collapse = ", ")
+  )
+
+  gtfsio_error(message, subclass = "files_misspecified", call = parent_call)
+}
+
+error_field_is_documented <- function(file, spec_both) {
+  parent_call <- sys.call(-3)
+  message <- paste0(
+    "The following field(s) from the '",
+    file,
+    "' file were specified in 'extra_spec' but are already documented in ",
+    "the official GTFS reference: ",
+    paste0("'", spec_both, "'", collapse = ", ")
+  )
+
+  gtfsio_error(message, subclass = "field_is_documented", call = parent_call)
+}
+
+error_gtfs_missing_fields <- function(file, missing_fields) {
+  parent_call <- sys.call(-3)
+  message <- paste0(
+    "'", file, "' doesn't contain the following field(s): ",
+    paste0("'", missing_fields, "'", collapse = ", ")
+  )
+
+  gtfsio_error(message, subclass = "gtfs_missing_fields", call = parent_call)
+}
+
+error_fields_misspec <- function(fields_misspec) {
+  parent_call <- sys.call(-3)
+  message <- paste0(
+    "The following fields were specified in 'extra_spec' but either were ",
+    "not specified in 'fields' or do not exist: ",
+    paste0("'", fields_misspec, "'", collapse = ", ")
+  )
+
+  gtfsio_error(message, subclass = "gtfs_fields_misspec", call = parent_call)
 }

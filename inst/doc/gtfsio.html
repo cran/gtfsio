@@ -469,52 +469,52 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="checking-gtfs-objects" class="section level2">
 <h2>Checking GTFS objects</h2>
-<p><strong>gtfsio</strong> also includes functions to check the structure of GTFS objects. <code>check_files_exist()</code> checks the existence of elements representing specific text files inside an object. It returns <code>TRUE</code> if the check is successful, and <code>FALSE</code> otherwise. <code>assert_files_exist()</code> invisibly returns the object if successful, and throws an error otherwise:</p>
+<p><strong>gtfsio</strong> also includes functions to check the structure of GTFS objects. <code>check_file_exists()</code> checks the existence of elements representing specific text files inside an object. It returns <code>TRUE</code> if the check is successful, and <code>FALSE</code> otherwise. <code>assert_file_exists()</code> invisibly returns the object if successful, and throws an error otherwise:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_path, <span class="dt">files =</span> <span class="kw">c</span>(<span class="st">&quot;shapes&quot;</span>, <span class="st">&quot;trips&quot;</span>))</a>
 <a class="sourceLine" id="cb11-2" title="2"></a>
-<a class="sourceLine" id="cb11-3" title="3"><span class="kw">check_files_exist</span>(gtfs, <span class="st">&quot;shapes&quot;</span>)</a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="kw">check_file_exists</span>(gtfs, <span class="st">&quot;shapes&quot;</span>)</a>
 <a class="sourceLine" id="cb11-4" title="4"><span class="co">#&gt; [1] TRUE</span></a>
-<a class="sourceLine" id="cb11-5" title="5"><span class="kw">check_files_exist</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>)</a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="kw">check_file_exists</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>)</a>
 <a class="sourceLine" id="cb11-6" title="6"><span class="co">#&gt; [1] FALSE</span></a>
 <a class="sourceLine" id="cb11-7" title="7"></a>
-<a class="sourceLine" id="cb11-8" title="8"><span class="kw">assert_files_exist</span>(gtfs, <span class="st">&quot;shapes&quot;</span>)</a>
-<a class="sourceLine" id="cb11-9" title="9"><span class="kw">assert_files_exist</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>)</a>
-<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt; Error in assert_files_exist(gtfs, &quot;stop_times&quot;): The GTFS object is missing the following required element(s): &#39;stop_times&#39;</span></a></code></pre></div>
-<p><code>check_fields_exist()</code> checks the existence of fields, represented by columns, inside GTFS objects. It returns <code>TRUE</code> if the check is successful, and <code>FALSE</code> otherwise. <code>assert_fields_exist()</code> invisibly returns the object if successful, and throws an error otherwise:</p>
+<a class="sourceLine" id="cb11-8" title="8"><span class="kw">assert_file_exists</span>(gtfs, <span class="st">&quot;shapes&quot;</span>)</a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="kw">assert_file_exists</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>)</a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt; Error: The GTFS object is missing the following required element(s): &#39;stop_times&#39;</span></a></code></pre></div>
+<p><code>check_field_exists()</code> checks the existence of fields, represented by columns, inside GTFS objects. It returns <code>TRUE</code> if the check is successful, and <code>FALSE</code> otherwise. <code>assert_field_exists()</code> invisibly returns the object if successful, and throws an error otherwise:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(</a>
-<a class="sourceLine" id="cb12-2" title="2">  gtfs_path, </a>
-<a class="sourceLine" id="cb12-3" title="3">  <span class="dt">files =</span> <span class="st">&quot;trips&quot;</span>, </a>
+<a class="sourceLine" id="cb12-2" title="2">  gtfs_path,</a>
+<a class="sourceLine" id="cb12-3" title="3">  <span class="dt">files =</span> <span class="st">&quot;trips&quot;</span>,</a>
 <a class="sourceLine" id="cb12-4" title="4">  <span class="dt">fields =</span> <span class="kw">list</span>(<span class="dt">trips =</span> <span class="st">&quot;trip_id&quot;</span>)</a>
 <a class="sourceLine" id="cb12-5" title="5">)</a>
 <a class="sourceLine" id="cb12-6" title="6"></a>
-<a class="sourceLine" id="cb12-7" title="7"><span class="kw">check_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;trip_id&quot;</span>)</a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="kw">check_field_exists</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;trip_id&quot;</span>)</a>
 <a class="sourceLine" id="cb12-8" title="8"><span class="co">#&gt; [1] TRUE</span></a>
-<a class="sourceLine" id="cb12-9" title="9"><span class="kw">check_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;shape_id&quot;</span>)</a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="kw">check_field_exists</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;shape_id&quot;</span>)</a>
 <a class="sourceLine" id="cb12-10" title="10"><span class="co">#&gt; [1] FALSE</span></a>
 <a class="sourceLine" id="cb12-11" title="11"></a>
-<a class="sourceLine" id="cb12-12" title="12"><span class="kw">assert_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;trip_id&quot;</span>)</a>
-<a class="sourceLine" id="cb12-13" title="13"><span class="kw">assert_fields_exist</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;shape_id&quot;</span>)</a>
-<a class="sourceLine" id="cb12-14" title="14"><span class="co">#&gt; Error in assert_fields_exist(gtfs, &quot;trips&quot;, fields = &quot;shape_id&quot;): The GTFS object &#39;trips&#39; element is missing the following required column(s): &#39;shape_id&#39;</span></a></code></pre></div>
-<p><code>check_fields_types()</code> checks the types of fields inside GTFS objects. It returns <code>TRUE</code> if the check is successful, and <code>FALSE</code> otherwise. <code>assert_fields_types()</code> invisibly returns the object if successful, and throws an error otherwise:</p>
+<a class="sourceLine" id="cb12-12" title="12"><span class="kw">assert_field_exists</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;trip_id&quot;</span>)</a>
+<a class="sourceLine" id="cb12-13" title="13"><span class="kw">assert_field_exists</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;shape_id&quot;</span>)</a>
+<a class="sourceLine" id="cb12-14" title="14"><span class="co">#&gt; Error: The GTFS object &#39;trips&#39; element is missing the following required column(s): &#39;shape_id&#39;</span></a></code></pre></div>
+<p><code>check_field_class()</code> checks the classes of fields inside GTFS objects. It returns <code>TRUE</code> if the check is successful, and <code>FALSE</code> otherwise. <code>assert_field_class()</code> invisibly returns the object if successful, and throws an error otherwise:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_path, <span class="dt">files =</span> <span class="st">&quot;levels&quot;</span>)</a>
 <a class="sourceLine" id="cb13-2" title="2"></a>
-<a class="sourceLine" id="cb13-3" title="3"><span class="kw">check_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;character&quot;</span>)</a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="kw">check_field_class</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">classes =</span> <span class="st">&quot;character&quot;</span>)</a>
 <a class="sourceLine" id="cb13-4" title="4"><span class="co">#&gt; [1] TRUE</span></a>
-<a class="sourceLine" id="cb13-5" title="5"><span class="kw">check_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;integer&quot;</span>)</a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="kw">check_field_class</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">classes =</span> <span class="st">&quot;integer&quot;</span>)</a>
 <a class="sourceLine" id="cb13-6" title="6"><span class="co">#&gt; [1] FALSE</span></a>
 <a class="sourceLine" id="cb13-7" title="7"></a>
-<a class="sourceLine" id="cb13-8" title="8"><span class="kw">assert_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;character&quot;</span>)</a>
-<a class="sourceLine" id="cb13-9" title="9"><span class="kw">assert_fields_types</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;integer&quot;</span>)</a>
-<a class="sourceLine" id="cb13-10" title="10"><span class="co">#&gt; Error in assert_fields_types(gtfs, &quot;levels&quot;, fields = &quot;elevation&quot;, types = &quot;integer&quot;): The following columns in the GTFS object &#39;levels&#39; element do not inherit from the required types:</span></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="kw">assert_field_class</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">classes =</span> <span class="st">&quot;character&quot;</span>)</a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="kw">assert_field_class</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="dt">classes =</span> <span class="st">&quot;integer&quot;</span>)</a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="co">#&gt; Error: The following columns in the GTFS object &#39;levels&#39; element do not inherit from the required classes:</span></a>
 <a class="sourceLine" id="cb13-11" title="11"><span class="co">#&gt;   - &#39;elevation&#39;: requires integer, but inherits from character</span></a></code></pre></div>
 <p>Please notes that “lower-level” checks are conducted inside each function - e.g. before checking the type of a field, first the existence of such field is checked:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">gtfs &lt;-<span class="st"> </span><span class="kw">import_gtfs</span>(gtfs_path, <span class="dt">files =</span> <span class="st">&quot;shapes&quot;</span>)</a>
 <a class="sourceLine" id="cb14-2" title="2"></a>
-<a class="sourceLine" id="cb14-3" title="3"><span class="kw">check_fields_types</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;stop_id&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;character&quot;</span>)</a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="kw">check_field_class</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;stop_id&quot;</span>, <span class="dt">classes =</span> <span class="st">&quot;character&quot;</span>)</a>
 <a class="sourceLine" id="cb14-4" title="4"><span class="co">#&gt; [1] FALSE</span></a>
 <a class="sourceLine" id="cb14-5" title="5"></a>
-<a class="sourceLine" id="cb14-6" title="6"><span class="kw">assert_fields_types</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>, <span class="dt">fileds =</span> <span class="st">&quot;stop_id&quot;</span>, <span class="dt">types =</span> <span class="st">&quot;character&quot;</span>)</a>
-<a class="sourceLine" id="cb14-7" title="7"><span class="co">#&gt; Error in assert_fields_types(gtfs, &quot;stop_times&quot;, fileds = &quot;stop_id&quot;, types = &quot;character&quot;): unused argument (fileds = &quot;stop_id&quot;)</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-6" title="6"><span class="kw">assert_field_class</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>, <span class="dt">fields =</span> <span class="st">&quot;stop_id&quot;</span>, <span class="dt">classes =</span> <span class="st">&quot;character&quot;</span>)</a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="co">#&gt; Error: The GTFS object is missing the following required element(s): &#39;stop_times&#39;</span></a></code></pre></div>
 <p>These functions are great for package interoperability. If two distinct packages represent GTFS text files using the same data structure (both <code>{gtfstools}</code> and <code>{gtfsrouter}</code> use <code>data.table</code>s, for example), they just need to add some basic checks before proceeding with operations on objects created by the other package.</p>
 <p>So, if <code>{gtfsrouter}</code> requires the <code>transfers</code> element to perform some operations, it might as well perform them on an object created by <code>{gtfstools}</code>, as long as it contains a <code>transfers</code> element. Thus, it could greatly benefit of some <code>assert_*</code>/<code>check_*</code> calls before proceeding with such operations.</p>
 </div>

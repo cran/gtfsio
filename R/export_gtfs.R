@@ -56,65 +56,29 @@ export_gtfs <- function(gtfs,
 
   # basic input checking
 
-  if (!inherits(gtfs, "gtfs"))
-    stop("'gtfs' must inherit from the 'gtfs' class.")
+  assert_class(gtfs, "gtfs")
+  assert_vector(path, "character", len = 1L)
+  assert_vector(files, "character", null_ok = TRUE)
+  assert_vector(standard_only, "logical", len = 1L)
+  assert_vector(compression_level, "numeric", len = 1L)
+  assert_vector(as_dir, "logical", len = 1L)
+  assert_vector(overwrite, "logical", len = 1L)
+  assert_vector(quiet, "logical", len = 1L)
 
-  if (!is.character(path) | length(path) != 1)
-    stop("'path' must be a string (a character vector of length 1).")
-
-  if (path == tempdir())
-    stop(
-      paste0(
-        "Please use 'tempfile()' instead of 'tempdir()' to designate ",
-        "temporary directories."
-      )
-    )
-
-  if (!is.null(files) & !is.character(files))
-    stop("'files' must either be a character vector or NULL.")
-
-  if (!is.logical(standard_only) | length(standard_only) != 1)
-    stop("'standard_only' must be a logical vector of length 1.")
-
-  if (!is.numeric(compression_level) | length(compression_level) != 1)
-    stop("'compression_level' must be a numeric vector of length 1.")
-
-  if (!is.logical(as_dir) | length(as_dir) != 1)
-    stop("'as_dir' must be a logical vector of length 1.")
-
-  if (!is.logical(overwrite) | length(overwrite) != 1)
-    stop("'overwrite' must be a logical vector of length 1.")
-
-  if (!is.logical(quiet) | length(quiet) != 1)
-    stop("'quiet' must be a logical vector of length 1.")
+  if (path == tempdir()) error_tempfile_misused()
 
   # input checks that depend on more than one argument
 
-  if (file.exists(path) & !overwrite)
-    stop(
-      "'path' points to an existing file/directory, ",
-      "but 'overwrite' is set to FALSE."
-    )
-
-  if (!as_dir & !grepl("\\.zip$", path))
-    stop(
-      "'path' must have '.zip' extension. ",
-      "If you meant to create a directory please set 'as_dir' to TRUE."
-    )
-
-  if (as_dir & grepl("\\.zip$", path)) {
-    stop("'path' cannot have '.zip' extension when 'as_dir' is TRUE.")
-  }
+  if (file.exists(path) & !overwrite) error_cannot_overwrite()
+  if (!as_dir & !grepl("\\.zip$", path)) error_ext_must_be_zip()
+  if (as_dir & grepl("\\.zip$", path)) error_path_must_be_dir()
 
   extra_files <- setdiff(files, names(gtfs_standards))
-  if (standard_only & !is.null(files) & !identical(extra_files, character(0)))
-    stop(
-      "Non-standard file specified in 'files', ",
-      "even though 'standard_only' is set to TRUE: ",
-      paste0("'", extra_files, "'", collapse = ", ")
-    )
+  if (standard_only & !is.null(files) & !identical(extra_files, character(0))) {
+    error_non_standard_files(extra_files)
+  }
 
- # if files is NULL then all 'gtfs' elements should be written
+  # if files is NULL then all 'gtfs' elements should be written
 
   if (is.null(files)) files <- names(gtfs)
 
@@ -135,20 +99,18 @@ export_gtfs <- function(gtfs,
 
   missing_files <- setdiff(files, names(gtfs))
 
-  if (!identical(missing_files, character(0)))
-    stop(
-      "The provided GTFS object does not contain the following ",
-      "elements specified in 'files': ",
-      paste0("'", missing_files, "'", collapse = ", ")
-    )
+  if (!identical(missing_files, character(0))) {
+    error_missing_specified_file(missing_files)
+  }
 
   # write files either to a temporary directory (if as_dir = FALSE), or to path
   # (if as_dir = TRUE)
 
-  if (as_dir)
+  if (as_dir) {
     tmpd <- path
-  else
+  } else {
     tmpd <- tempfile(pattern = "gtfsio")
+  }
 
   unlink(tmpd, recursive = TRUE)
   dir.create(tmpd)
@@ -208,4 +170,60 @@ export_gtfs <- function(gtfs,
 
   return(invisible(gtfs))
 
+}
+
+
+# errors ------------------------------------------------------------------
+
+
+#' @include gtfsio_error.R
+error_tempfile_misused <- parent_function_error(
+  paste0(
+    "Please use 'tempfile()' instead of 'tempdir()' to designate ",
+    "temporary directories."
+  ),
+  subclass = "tempfile_misused"
+)
+
+error_cannot_overwrite <- parent_function_error(
+  paste0(
+    "'path' points to an existing file/directory, ",
+    "but 'overwrite' is set to FALSE."
+  ),
+  subclass = "cannot_overwrite_file"
+)
+
+error_ext_must_be_zip <- parent_function_error(
+  paste0(
+    "'path' must have '.zip' extension. ",
+    "If you meant to create a directory please set 'as_dir' to TRUE."
+  ),
+  subclass = "ext_must_be_zip"
+)
+
+error_path_must_be_dir <- parent_function_error(
+  "'path' cannot have '.zip' extension when 'as_dir' is TRUE.",
+  subclass = "path_must_be_dir"
+)
+
+error_non_standard_files <- function(extra_files) {
+  parent_call <- sys.call(-1)
+  message <- paste0(
+    "Non-standard file specified in 'files', ",
+    "even though 'standard_only' is set to TRUE: ",
+    paste0("'", extra_files, "'", collapse = ", ")
+  )
+
+  gtfsio_error(message, subclass = "non_standard_files", call = parent_call)
+}
+
+error_missing_specified_file <- function(missing_files) {
+  parent_call <- sys.call(-1)
+  message <- paste0(
+    "The provided GTFS object does not contain the following ",
+    "elements specified in 'files': ",
+    paste0("'", missing_files, "'", collapse = ", ")
+  )
+
+  gtfsio_error(message, subclass = "missing_specified_file", call = parent_call)
 }

@@ -7,9 +7,9 @@
 #' @param files A character vector. The files to check the existence of.
 #'
 #' @return
-#' \code{check_files_exist} returns \code{TRUE} if the check is successful, and
+#' \code{check_file_exists} returns \code{TRUE} if the check is successful, and
 #'   \code{FALSE} otherwise. \cr
-#' \code{assert_files_exist} returns \code{x} invisibly if the check is
+#' \code{assert_file_exists} returns \code{x} invisibly if the check is
 #'   successful, and throws an error otherwise.
 #'
 #' @family checking functions
@@ -18,18 +18,15 @@
 #' gtfs_path <- system.file("extdata/ggl_gtfs.zip", package = "gtfsio")
 #' gtfs <- import_gtfs(gtfs_path)
 #'
-#' check_files_exist(gtfs, c("calendar", "agency"))
+#' check_file_exists(gtfs, c("calendar", "agency"))
 #'
-#' check_files_exist(gtfs, c("calendar", "oi"))
+#' check_file_exists(gtfs, c("calendar", "oi"))
 #'
 #' @export
-check_files_exist <- function(x, files) {
+check_file_exists <- function(x, files) {
 
-  # input checking
-
-  if (!inherits(x, "gtfs")) stop("'x' must inherit from the 'gtfs' class.")
-
-  if (!is.character(files)) stop("'files' must be a character vector.")
+  assert_class(x, "gtfs")
+  assert_vector(files, "character")
 
   # actual checking
 
@@ -43,15 +40,12 @@ check_files_exist <- function(x, files) {
 
 
 
-#' @rdname check_files_exist
+#' @rdname check_file_exists
 #' @export
-assert_files_exist <- function(x, files) {
+assert_file_exists <- function(x, files) {
 
-  # input checking
-
-  if (!inherits(x, "gtfs")) stop("'x' must inherit from the 'gtfs' class.")
-
-  if (!is.character(files)) stop("'files' must be a character vector.")
+  assert_class(x, "gtfs")
+  assert_vector(files, "character")
 
   # actual checking
 
@@ -59,11 +53,12 @@ assert_files_exist <- function(x, files) {
 
   if (identical(missing_files, character(0))) return(invisible(x))
 
-  stop(
+  gtfsio_error(
     paste0(
       "The GTFS object is missing the following required element(s): ",
       paste0("'", missing_files, "'", collapse = ", ")
-    )
+    ),
+    subclass = "missing_required_file"
   )
 
 }
@@ -81,9 +76,9 @@ assert_files_exist <- function(x, files) {
 #' @param fields A character vector. The fields to check the existence of.
 #'
 #' @return
-#' \code{check_fields_exist} returns \code{TRUE} if the check is successful, and
+#' \code{check_field_exists} returns \code{TRUE} if the check is successful, and
 #'   \code{FALSE} otherwise. \cr
-#' \code{assert_fields_exist} returns \code{x} invisibly if the check is
+#' \code{assert_field_exists} returns \code{x} invisibly if the check is
 #'   successful, and throws an error otherwise.
 #'
 #' @family checking functions
@@ -92,25 +87,20 @@ assert_files_exist <- function(x, files) {
 #' gtfs_path <- system.file("extdata/ggl_gtfs.zip", package = "gtfsio")
 #' gtfs <- import_gtfs(gtfs_path)
 #'
-#' check_fields_exist(gtfs, "calendar", c("monday", "tuesday"))
+#' check_field_exists(gtfs, "calendar", c("monday", "tuesday"))
 #'
-#' check_fields_exist(gtfs, "calendar", c("monday", "oi"))
+#' check_field_exists(gtfs, "calendar", c("monday", "oi"))
 #'
 #' @export
-check_fields_exist <- function(x, file, fields) {
+check_field_exists <- function(x, file, fields) {
 
-  # input checking
-
-  if (!inherits(x, "gtfs")) stop("'x' must inherit from the 'gtfs' class.")
-
-  if (!is.character(file) | length(file) != 1)
-    stop("'file' must be a string (a character vector of length 1).")
-
-  if (!is.character(fields)) stop("'fields' must be a character vector.")
+  assert_class(x, "gtfs")
+  assert_vector(file, "character", len = 1L)
+  assert_vector(fields, "character")
 
   # check if 'file' exists, and return FALSE if it doesn't
 
-  if (!check_files_exist(x, file)) return(FALSE)
+  if (!check_file_exists(x, file)) return(FALSE)
 
   # checking for field existence
 
@@ -124,22 +114,14 @@ check_fields_exist <- function(x, file, fields) {
 
 
 
-#' @rdname check_fields_exist
+#' @rdname check_field_exists
 #' @export
-assert_fields_exist <- function(x, file, fields) {
+assert_field_exists <- function(x, file, fields) {
 
-  # input checking
-
-  if (!inherits(x, "gtfs")) stop("'x' must inherit from the 'gtfs' class.")
-
-  if (!is.character(file) | length(file) != 1)
-    stop("'file' must be a string (a character vector of length 1).")
-
-  if (!is.character(fields)) stop("'fields' must be a character vector.")
-
-  # assert that 'file' exists
-
-  assert_files_exist(x, file)
+  assert_class(x, "gtfs")
+  assert_vector(file, "character", len = 1L)
+  assert_vector(fields, "character")
+  assert_file_exists(x, file)
 
   # actual checking
 
@@ -147,35 +129,36 @@ assert_fields_exist <- function(x, file, fields) {
 
   if (identical(missing_fields, character(0))) return(invisible(x))
 
-  stop(
+  gtfsio_error(
     paste0(
       "The GTFS object '",
       file,
       "' element is missing the following required column(s): ",
       paste0("'", missing_fields, "'", collapse = ", ")
-    )
+    ),
+    subclass = "missing_required_field"
   )
 
 }
 
 
 
-#' Check the types of fields in a GTFS object element
+#' Check the classes of fields in a GTFS object element
 #'
-#' Checks the types of fields, represented by columns, inside a GTFS object
+#' Checks the classes of fields, represented by columns, inside a GTFS object
 #' element.
 #'
 #' @param x A GTFS object.
 #' @param file A string. The element, that represents a GTFS text file, whose
-#'   fields' types should be checked.
-#' @param fields A character vector. The fields to have their types checked.
-#' @param types A character vector, with the same length of \code{fields}. The
-#'   types that each field must inherit from.
+#'   fields' classes should be checked.
+#' @param fields A character vector. The fields to have their classes checked.
+#' @param classes A character vector, with the same length of \code{fields}. The
+#'   classes that each field must inherit from.
 #'
 #' @return
-#' \code{check_fields_types} returns \code{TRUE} if the check is successful, and
+#' \code{check_field_class} returns \code{TRUE} if the check is successful, and
 #'   \code{FALSE} otherwise. \cr
-#' \code{assert_fields_types} returns \code{x} invisibly if the check is
+#' \code{assert_field_class} returns \code{x} invisibly if the check is
 #'   successful, and throws an error otherwise.
 #'
 #' @family checking functions
@@ -184,44 +167,42 @@ assert_fields_exist <- function(x, file, fields) {
 #' gtfs_path <- system.file("extdata/ggl_gtfs.zip", package = "gtfsio")
 #' gtfs <- import_gtfs(gtfs_path)
 #'
-#' check_fields_types(
+#' check_field_class(
 #'   gtfs,
 #'   "calendar",
 #'   fields = c("monday", "tuesday"),
-#'   types = rep("integer", 2)
+#'   classes = rep("integer", 2)
 #' )
 #'
-#' check_fields_types(
+#' check_field_class(
 #'   gtfs,
 #'   "calendar",
 #'   fields = c("monday", "tuesday"),
-#'   types = c("integer", "character")
+#'   classes = c("integer", "character")
 #' )
 #'
 #' @export
-check_fields_types <- function(x, file, fields, types) {
+check_field_class <- function(x, file, fields, classes) {
 
-  # input checking
+  assert_class(x, "gtfs")
+  assert_vector(file, "character", len = 1L)
+  assert_vector(fields, "character")
 
-  if (!inherits(x, "gtfs")) stop("'x' must inherit from the 'gtfs' class.")
-
-  if (!is.character(file) | length(file) != 1)
-    stop("'file' must be a string (a character vector of length 1).")
-
-  if (!is.character(fields)) stop("'fields' must be a character vector.")
-
-  if (!is.character(types) | length(types) != length(fields))
-    stop("'types' must be a character vector with the same length of 'fields'.")
+  if (!is.character(classes) | length(classes) != length(fields))
+    gtfsio_error(
+      "'classes' must be a character vector with the same length of 'fields'.",
+      subclass = "bad_classes_argument"
+    )
 
   # check if 'fields' exists, and return FALSE if it doesn't
 
-  if (!check_fields_exist(x, file, fields)) return(FALSE)
+  if (!check_field_exists(x, file, fields)) return(FALSE)
 
-  # checking - compare the desired types to the actual types
+  # checking - compare the desired classes to the actual classes
 
-  actual_types <- vapply(x[[file]][, ..fields], class, character(1))
+  actual_classes <- vapply(x[[file]][, ..fields], class, character(1))
 
-  if (all(types == actual_types)) return(TRUE)
+  if (all(classes == actual_classes)) return(TRUE)
 
   return(FALSE)
 
@@ -229,51 +210,47 @@ check_fields_types <- function(x, file, fields, types) {
 
 
 
-#' @rdname check_fields_types
+#' @rdname check_field_class
 #' @export
-assert_fields_types <- function(x, file, fields, types) {
+assert_field_class <- function(x, file, fields, classes) {
 
-  # input checking
+  assert_class(x, "gtfs")
+  assert_vector(file, "character", len = 1L)
+  assert_vector(fields, "character")
+  assert_field_exists(x, file, fields)
 
-  if (!inherits(x, "gtfs")) stop("'x' must inherit from the 'gtfs' class.")
+  if (!is.character(classes) | length(classes) != length(fields))
+    gtfsio_error(
+      "'classes' must be a character vector with the same length of 'fields'.",
+      subclass = "bad_classes_argument"
+    )
 
-  if (!is.character(file) | length(file) != 1)
-    stop("'file' must be a string (a character vector of length 1).")
+  # actual checking - compare the desired classes to the actual classes
 
-  if (!is.character(fields)) stop("'fields' must be a character vector.")
+  actual_classes <- vapply(x[[file]][, ..fields], class, character(1))
 
-  if (!is.character(types) | length(types) != length(fields))
-    stop("'types' must be a character vector with the same length of 'fields'.")
+  if (all(classes == actual_classes)) return(invisible(x))
 
-  # assert that 'fields' exist
+  bad_fields <- fields[classes != actual_classes]
+  req_classes <- classes[classes != actual_classes]
+  act_classes <- actual_classes[classes != actual_classes]
 
-  assert_fields_exist(x, file, fields)
-
-  # actual checking - compare the desired types to the actual types
-
-  actual_types <- vapply(x[[file]][, ..fields], class, character(1))
-
-  if (all(types == actual_types)) return(invisible(x))
-
-  bad_fields <- fields[types != actual_types]
-  req_types <- types[types != actual_types]
-  act_types <- actual_types[types != actual_types]
-
-  stop(
+  gtfsio_error(
     paste0(
       "The following columns in the GTFS object '",
       file,
-      "' element do not inherit from the required types:\n",
+      "' element do not inherit from the required classes:\n",
       paste0(
         "  - '",
         bad_fields,
         "': requires ",
-        req_types,
+        req_classes,
         ", but inherits from ",
-        act_types,
+        act_classes,
         collapse = "\n"
       )
-    )
+    ),
+    subclass = "wrong_class_field"
   )
 
 }
