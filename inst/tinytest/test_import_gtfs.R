@@ -8,9 +8,7 @@ tester <- function(data_path = path,
                    skip = NULL,
                    quiet = TRUE,
                    encoding = "unknown") {
-
   import_gtfs(data_path, files, fields, extra_spec, skip, quiet, encoding)
-
 }
 
 # basic input checking ----------------------------------------------------
@@ -20,10 +18,6 @@ a_list <- list(1)
 expect_error(tester(factor(path)), class = "bad_path_argument")
 expect_error(tester(c(path, path)), class = "bad_path_argument")
 expect_error(tester(c(path, path)), class = "import_gtfs_error")
-expect_error(
-  tester(sub(".zip", "", path)),
-  pattern = "'path' must have '\\.zip' extension\\."
-)
 expect_error(tester(quiet = "TRUE"), class = "bad_quiet_argument")
 expect_error(tester(quiet = rep(TRUE, 2)), class = "bad_quiet_argument")
 expect_error(tester(extra_spec = NA), class = "bad_extra_spec_argument")
@@ -180,7 +174,7 @@ actual_types <- actual_types[order(names(actual_types))]
 
 actual_types$levels <- actual_types$levels[2:4]
 
-# remove fields not present in 'actual_types' from 'standard_types'
+# remove files and fields not present in 'actual_types' from 'standard_types'
 
 prev_names <- names(standard_types)
 standard_types <- lapply(
@@ -188,6 +182,13 @@ standard_types <- lapply(
   function(file) standard_types[[file]][names(actual_types[[file]])]
 )
 names(standard_types) <- prev_names
+
+missing_files <- vapply(
+  standard_types,
+  FUN.VALUE = logical(1),
+  FUN = function(field_list) length(field_list) == 0
+)
+standard_types <- standard_types[!missing_files]
 
 expect_identical(standard_types, actual_types)
 
@@ -302,7 +303,7 @@ suppressWarnings(
     type = "message"
   )
 )
-expect_true(any(grepl("^  - File is empty\\.", out)))
+expect_true(any(grepl("^  - File .* has size 0\\.", out)))
 
 # warnings converted to messages upon parsing failures
 
@@ -369,3 +370,64 @@ gtfs_utf8 <- import_gtfs(tmpf, files = "agency", encoding = "UTF-8")
 gtfs_latin1 <- import_gtfs(tmpf, files = "agency", encoding = "Latin-1")
 
 expect_false(identical(gtfs_utf8$agency, gtfs_latin1$agency))
+
+
+# issue #23 - non text files present inside GTFS feed ---------------------
+# expect warning when attempting to read these feeds and that the non text file
+# will be ignored
+
+gtfs <- import_gtfs(path)
+
+tmpdir <- tempfile("gtfsio_non_text_test")
+dir.create(tmpdir)
+data.table::fwrite(gtfs$agency, file.path(tmpdir, "agency.txt"))
+invisible(file.create(file.path(tmpdir, "non_text.html")))
+
+tmpfile <- tempfile("gtfsio_non_text_test", fileext = ".zip")
+tmpfile <- zip::zip(
+  tmpfile,
+  list.files(tmpdir, full.names = TRUE),
+  mode = "cherry-pick"
+)
+
+expect_warning(
+  non_text_gtfs <- tester(tmpfile),
+  pattern = "non_text\\.html"
+)
+expect_identical(names(non_text_gtfs), "agency")
+
+# testing when it contains more than one non .txt file
+invisible(file.create(file.path(tmpdir, "another_non_text.html")))
+tmpfile <- zip::zip(
+  tmpfile,
+  list.files(tmpdir, full.names = TRUE),
+  mode = "cherry-pick"
+)
+
+expect_warning(
+  non_text_gtfs <- tester(tmpfile),
+  pattern = "another_non_text\\.html, non_text\\.html"
+)
+expect_identical(names(non_text_gtfs), "agency")
+
+
+# issue #28 ---------------------------------------------------------------
+# import_gtfs() should accept zip files without zip extension and should error
+# if the provided path doesn't point to a zip file
+
+no_ext_file <- tempfile()
+file.copy(path, no_ext_file)
+no_ext_gtfs <- tester(no_ext_file)
+expect_inherits(no_ext_gtfs, "gtfs")
+
+aspx_ext_file <- tempfile(fileext = ".aspx")
+file.copy(path, aspx_ext_file)
+aspx_ext_gtfs <- tester(aspx_ext_file)
+expect_inherits(aspx_ext_gtfs, "gtfs")
+
+not_gtfs_file <- tempfile()
+file.create(not_gtfs_file)
+expect_error(tester(not_gtfs_file), class = "path_must_be_zip")
+
+not_gtfs_url <- "https://www.google.com"
+expect_error(tester(not_gtfs_url), class = "path_must_be_zip")

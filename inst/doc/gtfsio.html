@@ -25,6 +25,7 @@
     </style>
 
 
+
 <style type="text/css">
   code {
     white-space: pre;
@@ -104,13 +105,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -335,7 +343,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>Throughout this demonstration we will be using a few sample files included in the package:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">data_dir &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;gtfsio&quot;</span>)</a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="kw">list.files</span>(data_dir)</a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt; [1] &quot;bad_gtfs.zip&quot; &quot;ggl_gtfs.zip&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt; [1] &quot;bad_gtfs.zip&quot;    &quot;ggl_gtfs.zip&quot;    &quot;nested_gtfs.zip&quot;</span></a></code></pre></div>
 <ul>
 <li><code>ggl_gtfs.zip</code> has been manually built from the <a href="https://developers.google.com/transit/gtfs/examples/gtfs-feed">example GTFS feed</a> provided by Google. The files samples are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 License</a>.</li>
 <li><code>bad_gtfs.zip</code> is a modified version of <code>ggl_gtfs.zip</code> that includes some issues frequently found in GTFS data.</li>

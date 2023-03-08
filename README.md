@@ -1,5 +1,5 @@
 
-# gtfsio
+# gtfsio <img align="right" src="man/figures/logo.png" width="180">
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/gtfsio)](https://CRAN.R-project.org/package=gtfsio)
@@ -13,7 +13,6 @@ coverage](https://codecov.io/gh/r-transit/gtfsio/branch/master/graph/badge.svg)]
 maturing](https://lifecycle.r-lib.org/articles/figures/lifecycle-maturing.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![CRAN/METACRAN Total
 downloads](http://cranlogs.r-pkg.org/badges/grand-total/gtfsio?color=yellow)](https://CRAN.R-project.org/package=gtfsio)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5650829.svg)](https://zenodo.org/record/5650829)
 
 **gtfsio** offers tools for the development of GTFS-related packages. It
 establishes a standard for representing GTFS feeds using R data types
@@ -54,11 +53,12 @@ path <- system.file("extdata/ggl_gtfs.zip", package = "gtfsio")
 gtfs <- import_gtfs(path)
 
 names(gtfs)
-#>  [1] "calendar_dates"  "fare_attributes" "fare_rules"      "feed_info"      
-#>  [5] "frequencies"     "levels"          "pathways"        "routes"         
-#>  [9] "shapes"          "stop_times"      "stops"           "transfers"      
-#> [13] "translations"    "trips"           "agency"          "attributions"   
-#> [17] "calendar"
+#>  [1] "agency"          "attributions"    "calendar"       
+#>  [4] "calendar_dates"  "fare_attributes" "fare_rules"     
+#>  [7] "feed_info"       "frequencies"     "levels"         
+#> [10] "pathways"        "routes"          "shapes"         
+#> [13] "stop_times"      "stops"           "transfers"      
+#> [16] "translations"    "trips"
 ```
 
 `import_gtfs()` returns a `gtfs` object. The `gtfs` class might be
@@ -78,12 +78,15 @@ tmpf <- tempfile(fileext = ".zip")
 export_gtfs(gtfs, tmpf)
 
 zip::zip_list(tmpf)$filename
-#>  [1] "calendar_dates.txt"  "fare_attributes.txt" "fare_rules.txt"     
-#>  [4] "feed_info.txt"       "frequencies.txt"     "levels.txt"         
-#>  [7] "pathways.txt"        "routes.txt"          "shapes.txt"         
-#> [10] "stop_times.txt"      "stops.txt"           "transfers.txt"      
-#> [13] "translations.txt"    "trips.txt"           "agency.txt"         
-#> [16] "attributions.txt"    "calendar.txt"
+#>  [1] "agency.txt"          "attributions.txt"   
+#>  [3] "calendar.txt"        "calendar_dates.txt" 
+#>  [5] "fare_attributes.txt" "fare_rules.txt"     
+#>  [7] "feed_info.txt"       "frequencies.txt"    
+#>  [9] "levels.txt"          "pathways.txt"       
+#> [11] "routes.txt"          "shapes.txt"         
+#> [13] "stop_times.txt"      "stops.txt"          
+#> [15] "transfers.txt"       "translations.txt"   
+#> [17] "trips.txt"
 ```
 
 For a more complete demonstration please read the [introductory
@@ -91,32 +94,7 @@ vignette](https://r-transit.github.io/gtfsio/articles/gtfsio.html).
 
 ## GTFS-related packages
 
--   [`{tidytransit}`](https://github.com/r-transit/tidytransit)
--   [`{gtfs2gps}`](https://github.com/ipeaGIT/gtfs2gps)
--   [`{gtfsrouter}`](https://github.com/ATFutures/gtfs-router)
--   [`{gtfstools}`](https://github.com/ipeaGIT/gtfstools)
-
-## Citation
-
-``` r
-citation("gtfsio")
-#> 
-#> To cite gtfsio in publications use:
-#> 
-#>   Daniel Herszenhut, Flavio Poletti & Mark Padgham. (2021, November).
-#>   gtfsio: Read and Write General Transit Feed Specification (GTFS)
-#>   Files (Version v1.0.0). Zenodo. http://doi.org/10.5281/zenodo.5650829
-#> 
-#> A BibTeX entry for LaTeX users is
-#> 
-#>   @Manual{,
-#>     title = {gtfsio: Read and Write General Transit Feed Specification (GTFS) Files},
-#>     author = {Daniel Herszenhut and Flavio Poletti and Mark Padgham},
-#>     month = {nov},
-#>     year = {2021},
-#>     publisher = {Zenodo},
-#>     version = {v1.0.0},
-#>     doi = {10.5281/zenodo.5650829},
-#>     url = {https://doi.org/10.5281/zenodo.5650829},
-#>   }
-```
+  - [`{tidytransit}`](https://github.com/r-transit/tidytransit)
+  - [`{gtfs2gps}`](https://github.com/ipeaGIT/gtfs2gps)
+  - [`{gtfsrouter}`](https://github.com/ATFutures/gtfs-router)
+  - [`{gtfstools}`](https://github.com/ipeaGIT/gtfstools)

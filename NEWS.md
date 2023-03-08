@@ -1,3 +1,18 @@
+# gtfsio 1.1.0
+
+## Bug fixes
+
+- Fixed a bug in which `import_gtfs()` would append a `.txt` extension to non text files found inside the GTFS feed, which would lead to an error when attempting to unzip the feed. The function now ignores non text files when reading feeds, and raises an informative warning message if any of such files is found ([#23](https://github.com/r-transit/gtfsio/issues/23)).
+
+## New features
+
+- `import_gtfs()` now accepts paths and URLs without `.zip` extension, as long as they still point to zip files (in other words, it accepts zip files that for some reason or another do not have `.zip` extension).
+
+## Notes
+
+- Started converting more warnings to messages when `quiet = FALSE` in `import_gtfs()` and `export_gtfs()`.
+- Updated standards to read and write GTFS tables and fields in R due to changes in the specification.
+
 # gtfsio 1.0.0
 
 ## Bug fixes
