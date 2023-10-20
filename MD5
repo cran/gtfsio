@@ -1,11 +1,11 @@
-f18b7da8868d045d118695804966dfb7 *DESCRIPTION
+1a219ca69bbf83178432628c60856fd0 *DESCRIPTION
 d03763d8cc6d068272d91d6b802ad733 *LICENSE
 5681a96799d8b94133424a4dcc86f0df *NAMESPACE
-77cc698eea1e1c509cdd4ac27d988d41 *NEWS.md
+f230baa5ee0bdaf6720c558a46394822 *NEWS.md
 df0eeb7e899c3990f1457174952436ad *R/assert_gtfs.R
 7c6c4872d995957e6461dc46fd504e5c *R/assert_inputs.R
 ff801edf219370583eba21d775bde396 *R/checks.R
-5af917c2a8aabca0e36af12f1ded9105 *R/export_gtfs.R
+3d88d292f0f772020e0bcdce40b8066f *R/export_gtfs.R
 cf85c556e3f0b1ea715d5e50749ed2f3 *R/get_gtfs_standards.R
 50b5bb999dab746a9eadec402f438823 *R/gtfs_methods.R
 3b57b6f22ecfeab734708cbffe5a8c0a *R/gtfs_subset.R
@@ -13,9 +13,9 @@ cf85c556e3f0b1ea715d5e50749ed2f3 *R/get_gtfs_standards.R
 44c06052a43dfc83b6628fc023d6b746 *R/gtfsio_error.R
 6f221cdbb4e119a48e09c211bf20fe0f *R/import_gtfs.R
 124e66de86d2889551f5052587683d75 *R/new_gtfs.R
-f439d503a22b501a2731b097fdf1e0b9 *README.md
-a040246765480ed090a9965643a90d59 *build/vignette.rds
-465555492f9e0c8625fab35c1731bc26 *inst/doc/gtfsio.R
+0ec3b98e75c5dcb401e2762520108499 *README.md
+d67129e30b72ec3190702e7906039586 *build/vignette.rds
+5f46b924632d1d2ec8459193025587ba *inst/doc/gtfsio.R
 3320624901ad520af778be7d5d27add0 *inst/doc/gtfsio.Rmd
 b2a803f6d0c7d412f85f36d64f541cb9 *inst/doc/gtfsio.html
 8ff0f11d25723644b9ec630bc4a1c934 *inst/extdata/bad_gtfs.zip
@@ -24,7 +24,7 @@ af3a2cc550453378b0947521a4658d9c *inst/extdata/nested_gtfs.zip
 fbb8be1a3c8d284db5a00f59ca9771c4 *inst/tinytest/test_assert_gtfs.R
 95c41be1946c58b0a65343da88be7878 *inst/tinytest/test_assert_inputs.R
 908e4d07ca3519d1c14be313a71b491e *inst/tinytest/test_checks.R
-06b36415ab6d978017952078ace099b8 *inst/tinytest/test_export_gtfs.R
+d49bad5ef41894b25cb7720ee04e283b *inst/tinytest/test_export_gtfs.R
 99868f326eaeeb2c4f25d20c68fe1ed5 *inst/tinytest/test_gtfsio_error.R
 cf88bcf4c845dc42507dd3d1fae234b3 *inst/tinytest/test_import_gtfs.R
 8ea440db4e97a9edbe99f03c45dd66a9 *inst/tinytest/test_new_gtfs.R
