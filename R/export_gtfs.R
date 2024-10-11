@@ -2,7 +2,7 @@
 #'
 #' Writes GTFS objects to disk as GTFS transit feeds. The object must be
 #' formatted according to the standards for reading and writing GTFS transit
-#' feeds, as specified in \code{\link{get_gtfs_standards}} (i.e. data types are
+#' feeds, as specified in \code{\link{gtfs_reference}} (i.e. data types are
 #' not checked). If present, does not write auxiliary tables held in a sub-list
 #' named \code{"."}.
 #'
@@ -25,7 +25,7 @@
 #'
 #' @return Invisibly returns the same GTFS object passed to \code{gtfs}.
 #'
-#' @seealso \code{\link{get_gtfs_standards}}
+#' @seealso \code{\link{gtfs_reference}}
 #'
 #' @family io functions
 #'
@@ -52,8 +52,6 @@ export_gtfs <- function(gtfs,
                         overwrite = TRUE,
                         quiet = TRUE) {
 
-  gtfs_standards <- get_gtfs_standards()
-
   # basic input checking
 
   assert_class(gtfs, "gtfs")
@@ -69,11 +67,11 @@ export_gtfs <- function(gtfs,
 
   # input checks that depend on more than one argument
 
-  if (file.exists(path) & !overwrite) error_cannot_overwrite()
-  if (!as_dir & !grepl("\\.zip$", path)) error_ext_must_be_zip()
-  if (as_dir & grepl("\\.zip$", path)) error_path_must_be_dir()
+  if (fs::file_exists(path) & !overwrite) error_cannot_overwrite()
+  if (!as_dir & !has_file_ext(path, "zip")) error_ext_must_be_zip()
+  if (as_dir & has_file_ext(path, "zip")) error_path_must_be_dir()
 
-  extra_files <- setdiff(files, names(gtfs_standards))
+  extra_files <- setdiff(files, names(gtfsio::gtfs_reference))
   if (standard_only & !is.null(files) & !identical(extra_files, character(0))) {
     error_non_standard_files(extra_files)
   }
@@ -91,7 +89,7 @@ export_gtfs <- function(gtfs,
   # 'extra_files' is re-evaluated because 'files' might have changed in the
   # lines above
 
-  extra_files <- setdiff(files, names(gtfs_standards))
+  extra_files <- setdiff(files, names(gtfsio::gtfs_reference))
 
   if (standard_only) files <- setdiff(files, extra_files)
 
@@ -109,45 +107,55 @@ export_gtfs <- function(gtfs,
   if (as_dir) {
     tmpd <- path
   } else {
-    tmpd <- tempfile(pattern = "gtfsio")
+    tmpd <- fs::file_temp(pattern = "gtfsio")
   }
 
-  unlink(tmpd, recursive = TRUE)
-  dir.create(tmpd)
+  if (fs::dir_exists(tmpd)) {
+    fs::dir_delete(tmpd)
+  }
+  fs::dir_create(tmpd, recurse = TRUE)
 
   # write files to 'tmpd'
 
   if (!quiet) message("Writing text files to ", tmpd)
 
-  for (file in files) {
+  filenames <- append_file_ext(files)
+  filepaths <- fs::path(tmpd, filenames)
 
-    filename <- paste0(file, ".txt")
-    filepath <- file.path(tmpd, filename)
+  for (i in seq_along(files)) {
+
+    filename <- filenames[i]
+    file <- files[i]
+    filepath <- filepaths[i]
 
     if (!quiet) message("  - Writing ", filename)
 
     dt <- gtfs[[file]]
 
-    # if 'standard_only' is set to TRUE, remove non-standard fields from 'dt'
-    # before writing it to disk
+    if (has_file_ext(filename, "geojson")) {
+      jsonlite::write_json(dt, filepath, pretty = FALSE, auto_unbox = TRUE, digits = 8)
+    } else {
 
-    if (standard_only) {
+      # if 'standard_only' is set to TRUE, remove non-standard fields from 'dt'
+      # before writing it to disk
 
-      file_cols  <- names(dt)
-      extra_cols <- setdiff(file_cols, names(gtfs_standards[[file]]))
+      if (standard_only) {
 
-      if (!identical(extra_cols, character(0))) dt <- dt[, !..extra_cols]
+        file_cols  <- names(dt)
+        extra_cols <- setdiff(file_cols, names(gtfsio::gtfs_reference[[file]][["field_types"]]))
 
-    }
+        if (!identical(extra_cols, character(0))) dt <- dt[, !..extra_cols]
 
-    # print warning message if warning is raised and 'quiet' is FALSE
-    withCallingHandlers(
-      data.table::fwrite(dt, filepath, scipen = 999),
-      warning = function(cnd) {
-        if (!quiet) message("    - ", conditionMessage(cnd))
       }
-    )
 
+      # print warning message if warning is raised and 'quiet' is FALSE
+      withCallingHandlers(
+        data.table::fwrite(dt, filepath, scipen = 999),
+        warning = function(cnd) {
+          if (!quiet) message("    - ", conditionMessage(cnd))
+        }
+      )
+    }
   }
 
   # zip the contents of 'tmpd' to 'path', if as_dir = FALSE
@@ -159,9 +167,9 @@ export_gtfs <- function(gtfs,
 
   if (!as_dir) {
 
-    unlink(path, recursive = TRUE)
-
-    filepaths <- file.path(tmpd, paste0(files, ".txt"))
+    if (fs::dir_exists(path)) {
+      fs::dir_delete(path)
+    }
 
     zip::zip(
       path,

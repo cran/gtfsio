@@ -1,6 +1,12 @@
+# nocov start
+
 #' Generate GTFS standards
 #'
 #' @description
+#' The dataset [gtfs_reference] now contains the standard specifications.
+#' This function is deprecated and no longer used in [import_gtfs()] or [export_gtfs()].
+#'
+#' @details
 #' Generates a list specifying the standards to be used when reading and writing
 #' GTFS feeds with R. Each list element (also a list) represents a distinct GTFS
 #' table, and describes:
@@ -19,7 +25,7 @@
 #'
 #' @section Details:
 #' GTFS standards were derived from [GTFS Schedule
-#' Reference](https://gtfs.org/schedule/reference/). The R data types chosen to
+#' Reference](https://gtfs.org/documentation/schedule/reference/). The R data types chosen to
 #' represent each GTFS data type are described below:
 #'
 #' - Color = `character`
@@ -40,11 +46,14 @@
 #' - Timezone = `character`
 #' - URL = `character`
 #'
-#' @examples
-#' gtfs_standards <- get_gtfs_standards()
+#' @seealso [gtfs_reference]
 #'
+#' @examples \dontrun{
+#'   gtfs_standards <- get_gtfs_standards()
+#' }
 #' @export
 get_gtfs_standards <- function() {
+  .Deprecated("gtfs_reference")
   agency <- list(
     file_spec       = "req",
     agency_id       = list("id",            "cond"),
@@ -404,3 +413,5 @@ translate_types <- function(text_file, r_equivalents) {
     }
   )
 }
+
+# nocov end

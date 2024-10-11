@@ -11,6 +11,10 @@ A named list, in which each element represents the R equivalent of
 each GTFS table standard.
 }
 \description{
+The dataset \link{gtfs_reference} now contains the standard specifications.
+This function is deprecated and no longer used in \code{\link[=import_gtfs]{import_gtfs()}} or \code{\link[=export_gtfs]{export_gtfs()}}.
+}
+\details{
 Generates a list specifying the standards to be used when reading and writing
 GTFS feeds with R. Each list element (also a list) represents a distinct GTFS
 table, and describes:
@@ -27,7 +31,7 @@ Note: the standards list is based on the specification as revised in May 9th,
 }
 \section{Details}{
 
-GTFS standards were derived from \href{https://gtfs.org/schedule/reference/}{GTFS Schedule Reference}. The R data types chosen to
+GTFS standards were derived from \href{https://gtfs.org/documentation/schedule/reference/}{GTFS Schedule Reference}. The R data types chosen to
 represent each GTFS data type are described below:
 \itemize{
 \item Color = \code{character}
@@ -51,6 +55,10 @@ represent each GTFS data type are described below:
 }
 
 \examples{
-gtfs_standards <- get_gtfs_standards()
-
+\dontrun{
+  gtfs_standards <- get_gtfs_standards()
+}
+}
+\seealso{
+\link{gtfs_reference}
 }
