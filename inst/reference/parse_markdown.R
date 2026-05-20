@@ -2,8 +2,8 @@
 read_markdown_table = function(lines) {
 	lines <- lines[!grepl('^[[:blank:]+-=:_|]*$', lines)]
 	lines <- gsub('(^\\s*?\\|)|(\\|\\s*?$)', '', lines)
-	readr::read_delim(paste(lines, collapse = '\n'), delim = '|',
-					  trim_ws = TRUE, show_col_types = FALSE)
+	readr::read_delim(I(paste(lines, collapse = '\n')), delim = '|',
+	                  trim_ws = TRUE, show_col_types = FALSE)
 }
 
 # parse all field definitions and return a list of tables
@@ -24,8 +24,8 @@ parse_fields = function(reference.md) {
 		if(stringr::str_starts(.line, "File: ")) {
 			.file_presence <- stringr::str_replace_all(.line, "File: ", "")
 		}
-		if(stringr::str_starts(.line, "Primary key ")) {
-			.primary_key <- stringr::str_replace_all(.line, "Primary key \\(", "")
+		if(stringr::str_starts(.line, "Primary [kK]ey ")) {
+			.primary_key <- stringr::str_replace_all(.line, "Primary [kK]ey \\(", "")
 			.primary_key <- stringr::str_replace_all(.primary_key, "\\)", "")
 		}
 
@@ -60,7 +60,8 @@ parse_fields = function(reference.md) {
 
 	# Revision Date
 	revision_date = gsub("**Revised ", "", ref_lines[3], fixed = T)
-	revision_date <- readr::parse_date(strsplit(revision_date, "\\. See")[[1]][1], "%b %d, %Y")
+	revision_date <- strsplit(revision_date, "\\. See")[[1]][1]
+	revision_date <- readr::parse_date(revision_date, "%B %d, %Y", locale = readr::locale("en"))
 	attributes(field_reference_list)$revision_date <- revision_date
 
 	return(field_reference_list)

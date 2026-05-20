@@ -27,7 +27,7 @@ gtfs_reference
 }
 \description{
 The data from the official GTFS specification document parsed to a list. Revision date:
-\code{2024-08-16}.
+\code{2026-04-27}.
 }
 \details{
 GTFS Types are converted to R types in gtfsio according to the following list:
@@ -44,6 +44,7 @@ GTFS Types are converted to R types in gtfsio according to the following list:
 \item{Integer = \code{integer}}
 \item{Language code = \code{character}}
 \item{Latitude = \code{numeric}}
+\item{Local time = \code{character}}
 \item{Longitude = \code{numeric}}
 \item{Non-negative float = \code{numeric}}
 \item{Non-negative integer = \code{integer}}

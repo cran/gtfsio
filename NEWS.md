@@ -1,3 +1,15 @@
+# gtfsio 1.2.1
+
+## Bug fixes
+
+- `import_gtfs()` can now download URLs that do not end in .zip on Windows ([#51](https://github.com/r-transit/gtfsio/pull/51))
+- `import_gtfs()` issues a warning if a feed contains a subdirectory ([#53](https://github.com/r-transit/gtfsio/pull/53))
+- `import_gtfs()` skips blank lines in csv files ([#57](https://github.com/r-transit/gtfsio/pull/57))
+
+## Notes
+
+- `gtfs_reference` has been updated to version 2026-04-27
+
 # gtfsio 1.2.0
 
 ## New features
@@ -13,7 +25,7 @@
 
 ## Bug fixes
 
-- Now prevents `export_gtfs()` to save large round numbers in scientific notation. This was not exactly a bug, as the specification does not forbid it, but the behavior could interfere with the workflow of people using other applications (as shown in [{gtfstools} #73](https://github.com/ipeaGIT/gtfstools/issues/73)). Also, improves the readability of the tables.
+- Now prevents `export_gtfs()` to save large round numbers in scientific notation. This was not exactly a bug, as the specification does not forbid it, but the behavior could interfere with the workflow of people using other applications (as shown in [{gtfstools} #73](https://github.com/ipea/gtfstools/issues/73)). Also, improves the readability of the tables.
 
 # gtfsio 1.1.0
 
@@ -49,7 +61,7 @@
 
 ## Bug fixes
 
-- `import_gtfs()` would ocasionally include the full path to a table to their name in a GTFS object (#17). Fixed by Mark Padgham (@mapdge) in #18.
+- `import_gtfs()` would occasionally include the full path to a table to their name in a GTFS object (#17). Fixed by Mark Padgham (@mpadge) in #18.
 
 ## New features
 

@@ -48,6 +48,7 @@ overflow: visible;
 }
 </style>
 <style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -362,9 +363,9 @@ basic <code>gtfs</code> class which is meant to be extended by packages
 that depend on it. And it also offers utility functions that support
 checking the structure of GTFS objects.</p>
 <p>This vignette describes the basic usage of <strong>gtfsio</strong>.
-Please read <code>get_gtfs_standards()</code> documentation for more
-detail on the standards for reading and writing GTFS feeds using R data
-types.</p>
+Please read the <a href="https://r-transit.github.io/gtfsio/reference/gtfs_reference.html">gtfs_reference
+dataset documentation</a> for more detail on the standards for reading
+and writing GTFS feeds using R data types.</p>
 <div id="installation" class="section level1">
 <h1>Installation</h1>
 <p>Before using <strong>gtfsio</strong> please make sure that you have
@@ -381,8 +382,8 @@ version from CRAN or the development version from GitHub:</p>
 included in the package:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>data_dir <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="at">package =</span> <span class="st">&quot;gtfsio&quot;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">list.files</span>(data_dir)</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;bad_gtfs.zip&quot;       &quot;ggl_gtfs.zip&quot;       &quot;locations_feed.zip&quot;</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; [4] &quot;nested_gtfs.zip&quot;</span></span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;bad_gtfs.zip&quot;       &quot;blank_lines.zip&quot;    &quot;ggl_gtfs.zip&quot;      </span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; [4] &quot;locations_feed.zip&quot; &quot;nested_gtfs.zip&quot;    &quot;subdirectories.zip&quot;</span></span></code></pre></div>
 <ul>
 <li><code>ggl_gtfs.zip</code> has been manually built from the <a href="https://developers.google.com/transit/gtfs/examples/gtfs-feed">example
 GTFS feed</a> provided by Google. The files samples are licensed under
@@ -552,7 +553,7 @@ using <code>export_gtfs()</code>:</p>
 <span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="st">&quot;extra_file&quot;</span> <span class="sc">%in%</span> <span class="fu">sub</span>(<span class="st">&quot;.txt&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="fu">list.files</span>(tmpd))</span>
 <span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
 <span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>levels_fields <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(tmpd, <span class="st">&quot;levels.txt&quot;</span>), <span class="at">n =</span> 1L)</span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>levels_fields <span class="ot">&lt;-</span> <span class="fu">readLines</span>(<span class="fu">file.path</span>(tmpd, <span class="st">&quot;levels.txt&quot;</span>), <span class="at">n =</span> <span class="dv">1</span><span class="dt">L</span>)</span>
 <span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="fu">grepl</span>(<span class="st">&quot;elevation&quot;</span>, levels_fields)</span>
 <span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 </div>
@@ -574,7 +575,8 @@ otherwise:</p>
 <span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a></span>
 <span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="fu">assert_file_exists</span>(gtfs, <span class="st">&quot;shapes&quot;</span>)</span>
 <span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="fu">assert_file_exists</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>)</span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt; Error: The GTFS object is missing the following required element(s): &#39;stop_times&#39;</span></span></code></pre></div>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt; Error:</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt; ! The GTFS object is missing the following required element(s): &#39;stop_times&#39;</span></span></code></pre></div>
 <p><code>check_field_exists()</code> checks the existence of fields,
 represented by columns, inside GTFS objects. It returns
 <code>TRUE</code> if the check is successful, and <code>FALSE</code>
@@ -593,7 +595,8 @@ object if successful, and throws an error otherwise:</p>
 <span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a></span>
 <span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="fu">assert_field_exists</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;trip_id&quot;</span>)</span>
 <span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="fu">assert_field_exists</span>(gtfs, <span class="st">&quot;trips&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;shape_id&quot;</span>)</span>
-<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; Error: The GTFS object &#39;trips&#39; element is missing the following required column(s): &#39;shape_id&#39;</span></span></code></pre></div>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="co">#&gt; Error:</span></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co">#&gt; ! The GTFS object &#39;trips&#39; element is missing the following required column(s): &#39;shape_id&#39;</span></span></code></pre></div>
 <p><code>check_field_class()</code> checks the classes of fields inside
 GTFS objects. It returns <code>TRUE</code> if the check is successful,
 and <code>FALSE</code> otherwise. <code>assert_field_class()</code>
@@ -608,8 +611,9 @@ otherwise:</p>
 <span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a></span>
 <span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="fu">assert_field_class</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="at">classes =</span> <span class="st">&quot;character&quot;</span>)</span>
 <span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="fu">assert_field_class</span>(gtfs, <span class="st">&quot;levels&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;elevation&quot;</span>, <span class="at">classes =</span> <span class="st">&quot;integer&quot;</span>)</span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; Error: The following columns in the GTFS object &#39;levels&#39; element do not inherit from the required classes:</span></span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt;   - &#39;elevation&#39;: requires integer, but inherits from character</span></span></code></pre></div>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; Error:</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; ! The following columns in the GTFS object &#39;levels&#39; element do not inherit from the required classes:</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;   - &#39;elevation&#39;: requires integer, but inherits from character</span></span></code></pre></div>
 <p>Please notes that “lower-level” checks are conducted inside each
 function - e.g. before checking the type of a field, first the existence
 of such field is checked:</p>
@@ -619,7 +623,8 @@ of such field is checked:</p>
 <span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
 <span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a></span>
 <span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="fu">assert_field_class</span>(gtfs, <span class="st">&quot;stop_times&quot;</span>, <span class="at">fields =</span> <span class="st">&quot;stop_id&quot;</span>, <span class="at">classes =</span> <span class="st">&quot;character&quot;</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#&gt; Error: The GTFS object is missing the following required element(s): &#39;stop_times&#39;</span></span></code></pre></div>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#&gt; Error:</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#&gt; ! The GTFS object is missing the following required element(s): &#39;stop_times&#39;</span></span></code></pre></div>
 <p>These functions are great for package interoperability. If two
 distinct packages represent GTFS text files using the same data
 structure (both <code>{gtfstools}</code> and <code>{gtfsrouter}</code>

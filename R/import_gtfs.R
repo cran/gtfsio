@@ -99,7 +99,7 @@ import_gtfs <- function(path,
 
   if (path_is_url) {
     tmp <- fs::file_temp(pattern = "gtfs", ext = ".zip")
-    utils::download.file(path, tmp, method = "auto", quiet = quiet)
+    utils::download.file(path, tmp, method = "auto", quiet = quiet, mode = "wb")
 
     if (!quiet) message("File downloaded to ", tmp, ".")
 
@@ -171,11 +171,22 @@ import_gtfs <- function(path,
     overwrite = TRUE
   )
 
-  if (!quiet)
+  if (!quiet) {
     message(
       "Unzipped the following files to ", tmpdir, ":\n",
       paste0("  * ", filenames_to_read, collapse = "\n")
     )
+  }
+
+  # check subdirectories
+
+  files_in_subdirs = filenames_to_read[grepl("/", filenames_to_read)]
+  if(length(files_in_subdirs) > 0) {
+    warning("Feed contains subdirectories (",
+            toString(unique(dirname(files_in_subdirs))),
+            "), gtfsio is trying to read these files.",
+            call. = FALSE)
+  }
 
   # read files into list
 
@@ -280,7 +291,8 @@ read_files <- function(file,
       sample_dt <- data.table::fread(
         fs::path(tmpdir, filename),
         nrows = 1,
-        colClasses = "character"
+        colClasses = "character",
+        blank.lines.skip = TRUE
       )
     },
     warning = function(cnd) if (!quiet) message("  - ", conditionMessage(cnd))
@@ -354,7 +366,8 @@ read_files <- function(file,
       full_dt <- data.table::fread(
         fs::path(tmpdir, filename),
         select = fields_classes,
-        encoding = encoding
+        encoding = encoding,
+        blank.lines.skip = TRUE
       )
     },
     warning = function(cnd) if (!quiet) message("  - ", conditionMessage(cnd))
@@ -367,6 +380,8 @@ read_files <- function(file,
 #' Read geojson file
 #'
 #' @param file.geojson geojson file
+#'
+#' @return json list
 #'
 #' @keywords internal
 #' @importFrom jsonlite read_json

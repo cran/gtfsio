@@ -5,11 +5,11 @@ knitr::opts_chunk$set(
 )
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  # stable version
-#  install.packages("gtfsio")
-#  
-#  # development version
-#  remotes::install_github("r-transit/gtfsio")
+# # stable version
+# install.packages("gtfsio")
+# 
+# # development version
+# remotes::install_github("r-transit/gtfsio")
 
 ## ----message = FALSE----------------------------------------------------------
 library(gtfsio)
@@ -86,6 +86,7 @@ levels_fields <- readLines(file.path(tmpd, "levels.txt"), n = 1L)
 grepl("elevation", levels_fields)
 
 ## ----error = TRUE-------------------------------------------------------------
+try({
 gtfs <- import_gtfs(gtfs_path, files = c("shapes", "trips"))
 
 check_file_exists(gtfs, "shapes")
@@ -93,8 +94,10 @@ check_file_exists(gtfs, "stop_times")
 
 assert_file_exists(gtfs, "shapes")
 assert_file_exists(gtfs, "stop_times")
+})
 
 ## ----error = TRUE-------------------------------------------------------------
+try({
 gtfs <- import_gtfs(
   gtfs_path,
   files = "trips",
@@ -106,8 +109,10 @@ check_field_exists(gtfs, "trips", fields = "shape_id")
 
 assert_field_exists(gtfs, "trips", fields = "trip_id")
 assert_field_exists(gtfs, "trips", fields = "shape_id")
+})
 
 ## ----error = TRUE-------------------------------------------------------------
+try({
 gtfs <- import_gtfs(gtfs_path, files = "levels")
 
 check_field_class(gtfs, "levels", fields = "elevation", classes = "character")
@@ -115,11 +120,14 @@ check_field_class(gtfs, "levels", fields = "elevation", classes = "integer")
 
 assert_field_class(gtfs, "levels", fields = "elevation", classes = "character")
 assert_field_class(gtfs, "levels", fields = "elevation", classes = "integer")
+})
 
 ## ----error = TRUE-------------------------------------------------------------
+try({
 gtfs <- import_gtfs(gtfs_path, files = "shapes")
 
 check_field_class(gtfs, "stop_times", fields = "stop_id", classes = "character")
 
 assert_field_class(gtfs, "stop_times", fields = "stop_id", classes = "character")
+})
 
